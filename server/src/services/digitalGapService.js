@@ -43,7 +43,11 @@ const evaluateDigitalPresence = (lead) => {
   } else if (lead.websiteStatus === 'BROKEN') {
     reasonToContact = `High rating (${lead.rating}★) but prospective clients encountering a broken website error, directly leaking customer inquiries.`;
   } else if (!audit.whatsappDetected || (!audit.leadFormDetected && !audit.bookingDetected)) {
-    reasonToContact = `Established local presence but digital inquiry funnel is missing instant WhatsApp routing and direct conversion CTAs.`;
+    if (lead.whatsappEligible === false || lead.phoneType === 'LANDLINE') {
+      reasonToContact = `Established local presence but digital inquiry funnel lacks after-hours booking and direct conversion CTAs.`;
+    } else {
+      reasonToContact = `Established local presence but digital inquiry funnel is missing instant WhatsApp routing and direct conversion CTAs.`;
+    }
   } else {
     reasonToContact = `Good existing digital foundation with opportunity to scale brand authority, advanced funnels, and conversion optimization.`;
   }

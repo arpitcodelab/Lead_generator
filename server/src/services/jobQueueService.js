@@ -8,6 +8,7 @@ const { discoverSocialPresence } = require('./socialDiscoveryService');
 const { evaluateDigitalPresence } = require('./digitalGapService');
 const { calculateLeadScore } = require('./scoringService');
 const { generatePitch } = require('./aiService');
+const { classifyPhone } = require('../utils/phoneClassifier');
 
 const activeJobs = new Map();
 
@@ -172,6 +173,46 @@ const processCampaignJob = async (campaignId) => {
         ? b.phone 
         : (auditResult.discoveredPhone && auditResult.discoveredPhone !== 'NOT FOUND' ? auditResult.discoveredPhone : 'NOT FOUND');
 
+      // Classify Phone: Landline vs Mobile (WhatsApp Eligibility)
+      const phoneClassification = classifyPhone(finalPhone);
+
+      // Re-run social discovery with phone context if needed
+      let socialData = socialDiscovery;
+      if (socialData.instagramUsername === 'NOT FOUND') {
+        const enrichedSocial = await discoverSocialPresence({ ...b, phone: finalPhone, location: campaign.location });
+        if (enrichedSocial.instagramUsername !== 'NOT FOUND') {
+          socialData = enrichedSocial;
+          finalIgUsername = enrichedSocial.instagramUsername;
+          finalIgUrl = enrichedSocial.instagramUrl;
+          finalIgStatus = enrichedSocial.instagramStatus;
+        }
+      }
+
+      // Infer fallback contact person role based on industry
+      let initialContact = b.contactPerson && b.contactPerson !== 'NOT FOUND' 
+        ? b.contactPerson 
+        : (socialData.contactPerson || 'NOT FOUND');
+
+      if (initialContact === 'NOT FOUND') {
+        const ind = (campaign.industry || '').toLowerCase();
+        if (ind.includes('gym')) initialContact = 'Owner / Head Coach';
+        else if (ind.includes('clinic')) initialContact = 'Clinic Director / Chief Doctor';
+        else if (ind.includes('salon')) initialContact = 'Salon Director / Studio Owner';
+        else if (ind.includes('restaurant') || ind.includes('cafe')) initialContact = 'General Manager / Owner';
+        else if (ind.includes('real estate')) initialContact = 'Principal Broker / Managing Partner';
+        else initialContact = 'Managing Director / Owner';
+      }
+
+      // Infer local competitors
+      let initialCompetitor = b.competitor || socialData.competitor || '';
+      if (!initialCompetitor) {
+        const ind = (campaign.industry || '').toLowerCase();
+        if (ind.includes('gym')) initialCompetitor = "Cult.fit, Anytime Fitness, Gold's Gym";
+        else if (ind.includes('clinic')) initialCompetitor = "Apollo Clinic, Max Healthcare";
+        else if (ind.includes('restaurant')) initialCompetitor = "Local Fine Dine & Cafes";
+        else initialCompetitor = "Top Local Competitors";
+      }
+
       // Construct intermediate lead object for gap analysis
       const partialLead = {
         businessName: b.businessName,
@@ -182,8 +223,12 @@ const processCampaignJob = async (campaignId) => {
         state: b.state || '',
         country: b.country || 'India',
         phone: finalPhone,
+        phoneType: phoneClassification.phoneType,
+        whatsappEligible: phoneClassification.whatsappEligible,
+        callScript: '',
+        competitor: initialCompetitor,
         email: finalEmail,
-        contactPerson: b.contactPerson || 'NOT FOUND',
+        contactPerson: initialContact,
         googleMapsUrl: b.googleMapsUrl,
         placeId: b.placeId,
         rating: b.rating,
@@ -197,9 +242,9 @@ const processCampaignJob = async (campaignId) => {
         websiteSource: auditResult.status === 'NO WEBSITE' ? 'NONE' : websiteDiscovery.websiteSource,
         instagramUsername: finalIgUsername,
         instagramUrl: finalIgUrl,
-        instagramFollowers: socialDiscovery.instagramFollowers || 0,
+        instagramFollowers: Number(socialData.instagramFollowers) || 0,
         instagramStatus: finalIgStatus,
-        instagramBio: socialDiscovery.instagramBio || '',
+        instagramBio: socialData.instagramBio || '',
         websiteAudit: auditResult.audit
       };
 
@@ -237,9 +282,17 @@ const processCampaignJob = async (campaignId) => {
 
       const pitchResult = await generatePitch(partialLead);
       partialLead.pitch = pitchResult.pitch;
+      partialLead.callScript = pitchResult.callScript || '';
       partialLead.whatsappMessage = pitchResult.whatsappMessage;
       partialLead.instagramMessage = pitchResult.instagramMessage;
       partialLead.emailMessage = pitchResult.emailMessage;
+      if (pitchResult.contactPerson && partialLead.contactPerson === 'NOT FOUND') {
+        partialLead.contactPerson = pitchResult.contactPerson;
+      }
+      if (pitchResult.competitor && (!partialLead.competitor || partialLead.competitor === 'Top Local Competitors')) {
+        partialLead.competitor = pitchResult.competitor;
+      }
+
       partialLead.campaignId = campaignId;
       partialLead.source = 'Google Places Permitted';
       partialLead.stage = 'RESEARCHED';

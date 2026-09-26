@@ -12,29 +12,67 @@ const generateDeterministicPitch = (lead) => {
   const category = (lead.category || 'business').toLowerCase();
   const rating = lead.rating || '4.8';
   const reviews = lead.reviewCount || 'solid';
-  const primaryService = lead.recommendedServices?.[0] || 'Custom Website & Lead Funnel';
+  const isLandline = lead.phoneType === 'LANDLINE' || lead.whatsappEligible === false;
+  const primaryService = lead.recommendedServices?.[0] || 'High-Converting Website & Lead Funnel';
+  const competitor = lead.competitor || 'Local Competitors';
+  const contactPerson = lead.contactPerson || (category.includes('gym') ? 'Owner / Head Coach' : category.includes('clinic') ? 'Clinic Director' : 'Owner / Managing Director');
 
   let observation = '';
   let problem = '';
   let opportunity = '';
 
-  if (lead.websiteStatus === 'NO WEBSITE') {
-    observation = `Your ${category} has built an impressive local reputation with a ${rating}★ Google rating and ${reviews} reviews, but no dedicated owned website was discovered.`;
-    problem = `Prospective customers discovering you on Google or social media cannot view your detailed offerings, pricing, or enquire directly, leading to lost client acquisition.`;
-    opportunity = `Convert high-intent search traffic into direct inquiries with a sleek, mobile-optimized website and automated WhatsApp inquiry routing.`;
-  } else if (lead.websiteStatus === 'BROKEN') {
-    observation = `Your ${category} has strong customer acclaim (${rating}★), but your current web link appears unreachable or returns an error.`;
-    problem = `High-intent visitors attempting to visit your site hit a broken link, which erodes trust and bounces them directly to local competitors.`;
-    opportunity = `Rapidly restore your digital presence with a modern, high-speed landing page that showcases your services flawlessly.`;
+  if (isLandline) {
+    if (lead.websiteStatus === 'NO WEBSITE') {
+      observation = `Your ${category} has built a standout local reputation with a ${rating}★ Google rating and ${reviews} reviews, but new inquiries currently rely on landline phone calls without an official website.`;
+      problem = `Prospective customers discovering you on Google cannot view your offerings or book after hours when your phone lines are closed, leaking valuable clients to competitors like ${competitor}.`;
+      opportunity = `Convert high-intent local searchers into confirmed appointments with a modern, high-speed website and after-hours consultation booking.`;
+    } else if (lead.websiteStatus === 'BROKEN') {
+      observation = `Your ${category} has stellar customer feedback (${rating}★ across ${reviews} reviews), but your current web link is unreachable.`;
+      problem = `Callers and searchers clicking your profile hit a broken page, forcing them to turn to local alternatives like ${competitor}.`;
+      opportunity = `Rapidly restore your digital web assets with a fast-loading consultation booking portal.`;
+    } else {
+      observation = `We reviewed your online presence for ${bName} and noted your strong ${rating}★ rating, but your digital setup lacks after-hours booking to support your phone inquiries.`;
+      problem = `Visitors outside business hours cannot take immediate action or request callbacks, limiting your inbound inquiry volume.`;
+      opportunity = `Deploy high-converting landing pages with direct consultation scheduling to capture every high-intent local searcher.`;
+    }
   } else {
-    observation = `We reviewed your online presence for ${bName} and noticed your solid ${rating}★ rating, but your website currently lacks an automated direct inquiry flow or instant WhatsApp CTA.`;
-    problem = `Visitors must manually search for contact details rather than booking or inquiring with a single tap, creating friction on mobile devices.`;
-    opportunity = `Integrate high-converting lead capture forms, WhatsApp widgets, and social proof to double your monthly inbound inquiries.`;
+    // Mobile / WhatsApp Eligible
+    if (lead.websiteStatus === 'NO WEBSITE') {
+      observation = `Your ${category} has built an impressive local reputation with a ${rating}★ Google rating and ${reviews} reviews, but no dedicated owned website was discovered.`;
+      problem = `Prospective customers discovering you on Google or social media cannot view your detailed offerings, pricing, or enquire directly, leading to lost client acquisition to competitors like ${competitor}.`;
+      opportunity = `Convert high-intent search traffic into direct inquiries with a sleek, mobile-optimized website and automated WhatsApp inquiry routing.`;
+    } else if (lead.websiteStatus === 'BROKEN') {
+      observation = `Your ${category} has strong customer acclaim (${rating}★ across ${reviews} reviews), but your current web link appears unreachable or returns an error.`;
+      problem = `High-intent visitors attempting to visit your site hit a broken link, which erodes trust and bounces them directly to ${competitor}.`;
+      opportunity = `Rapidly restore your digital presence with a modern, high-speed landing page that showcases your services flawlessly.`;
+    } else {
+      observation = `We reviewed your online presence for ${bName} and noticed your solid ${rating}★ rating, but your website currently lacks an automated direct inquiry flow or instant WhatsApp CTA.`;
+      problem = `Visitors must manually search for contact details rather than booking or inquiring with a single tap, creating friction on mobile devices.`;
+      opportunity = `Integrate high-converting lead capture forms, WhatsApp widgets, and social proof to double your monthly inbound inquiries.`;
+    }
   }
 
-  const shortPitch = `Hi! I noticed ${bName} has a fantastic ${rating}★ rating on Google with ${reviews} reviews. However, customers don't currently have a seamless, dedicated way to explore your packages and enquire instantly online. At Pixie Digital Creatives, we engineer high-converting digital platforms for growing businesses. I'd love to share a 2-minute concept tailored for ${bName}.`;
+  const shortPitch = isLandline
+    ? `Hi! I noticed ${bName} has a fantastic ${rating}★ rating on Google with ${reviews} reviews. However, customers looking for you after hours have no dedicated way to explore your offerings and book online when phone lines are unattended. At Pixie Digital Creatives, we engineer high-converting digital platforms that turn local searchers into paying clients. I'd love to share a 2-minute concept tailored for ${bName}.`
+    : `Hi! I noticed ${bName} has a fantastic ${rating}★ rating on Google with ${reviews} reviews. However, customers don't currently have a seamless, dedicated way to explore your packages and enquire instantly online. At Pixie Digital Creatives, we engineer high-converting digital platforms for growing businesses. I'd love to share a 2-minute concept tailored for ${bName}.`;
 
-  const whatsappMessage = `Hi ${bName} team! 👋 Came across your ${category} on Google—congratulations on the stellar ${rating}★ rating! ⭐
+  const callScript = `[30-Second Reception / Owner Phone Script]
+"Hello, good morning! I'm calling for the manager or owner of ${bName}.
+My name is [Your Name] with Pixie Digital Creatives.
+
+I was researching top-rated ${category} businesses in ${lead.location || 'the area'} and noticed your stellar ${rating}★ rating across ${reviews} Google reviews—congratulations on the great client feedback!
+
+The reason for my call is that I noticed you don't currently have a dedicated official website where prospective clients can view your full services and request consultations after hours when your phone line is closed. 
+
+We build high-converting web and inquiry systems for premier local brands, helping them capture 20-30 additional consultations each month from Google searchers.
+
+I've put together a quick, no-obligation 2-minute digital concept for ${bName}. Who would be the best person to email that preview to?"`;
+
+  const whatsappMessage = isLandline
+    ? `[LANDLINE NUMBER - WhatsApp Messaging Ineligible]
+This business uses landline ${lead.phone || ''}. Standard WhatsApp messages cannot be delivered.
+Use the Phone Call Script or Cold Email outreach to connect with the decision-maker.`
+    : `Hi ${bName} team! 👋 Came across your ${category} on Google—congratulations on the stellar ${rating}★ rating! ⭐
 
 We noticed that prospective clients looking for you online don't have a clear, dedicated website with 1-click WhatsApp enquiry to book directly.
 
@@ -54,11 +92,11 @@ First of all, congratulations on your outstanding ${rating}★ rating across ${r
 
 While reviewing your digital presence, I noticed a significant growth opportunity: ${observation} ${problem}
 
-At Pixie Digital Creatives (PDC), we specialize in crafting high-converting digital assets and WhatsApp lead capture systems designed to turn local searchers into paying clients.
+At Pixie Digital Creatives (PDC), we specialize in crafting high-converting digital assets designed to turn local searchers into paying clients.
 
 Based on your current setup, we recommend:
 • ${primaryService}
-• Frictionless 1-click WhatsApp lead routing
+• ${isLandline ? 'After-hours consultation booking & inquiry capture' : 'Frictionless 1-click WhatsApp lead routing'}
 • High-impact social proof integration
 
 I have prepared a quick, no-obligation preview of what an upgraded digital asset could look like for ${bName}. Would you be open to a 5-minute chat this week?
@@ -75,44 +113,61 @@ https://pixiedigitalcreatives.com`;
       recommendedService: primaryService,
       shortPitch
     },
+    callScript,
     whatsappMessage,
     instagramMessage,
-    emailMessage
+    emailMessage,
+    contactPerson,
+    competitor
   };
 };
 
 /**
- * AI Provider abstraction (OpenAI, Gemini, Anthropic, Custom, or Rule-Engine)
+ * AI Provider abstraction (Groq, OpenAI, or Rule-Engine)
  */
 const generatePitch = async (lead) => {
-  let provider = env.aiProvider;
-  let apiKey = env.aiApiKey;
-  let model = 'gpt-4o-mini';
+  let provider = process.env.AI_PROVIDER || env.aiProvider;
+  let apiKey = process.env.AI_API_KEY || env.aiApiKey;
+  let model = 'qwen/qwen3.8-27b';
 
-  try {
-    const settings = await Settings.findOne();
-    if (settings) {
-      provider = settings.aiProvider || provider;
-      apiKey = settings.aiApiKey || apiKey;
-      model = settings.aiModel || model;
+  const mongoose = require('mongoose');
+  if (mongoose.connection.readyState === 1) {
+    try {
+      const settings = await Settings.findOne();
+      if (settings && settings.aiApiKey) {
+        provider = settings.aiProvider || provider;
+        apiKey = settings.aiApiKey || apiKey;
+        model = settings.aiModel || model;
+      }
+    } catch (err) {
+      // Continue with env
     }
-  } catch (err) {
-    // Continue with env
   }
 
-  // If Groq provider configured or API key starts with gsk_
-  if (provider === 'groq' || (apiKey && apiKey.startsWith('gsk_'))) {
+  const isLandline = lead.phoneType === 'LANDLINE' || lead.whatsappEligible === false;
+
+  // Groq provider or API key starting with gsk_
+  if (apiKey && (apiKey.startsWith('gsk_') || provider === 'groq')) {
     try {
       const prompt = `You are a senior lead generation copywriter for Pixie Digital Creatives (PDC).
 Generate a factual, high-converting pitch for:
 Business Name: ${lead.businessName}
 Category: ${lead.category}
 Location: ${lead.location}
+Phone: ${lead.phone} (Phone Type: ${lead.phoneType || (isLandline ? 'LANDLINE' : 'MOBILE')})
+WhatsApp Eligible: ${!isLandline}
 Google Rating: ${lead.rating} (${lead.reviewCount} reviews)
 Website Status: ${lead.websiteStatus}
 Digital Gaps: ${(lead.digitalGaps || []).join(', ')}
 Digital Strengths: ${(lead.digitalStrengths || []).join(', ')}
 Recommended Service: ${(lead.recommendedServices || []).join(', ')}
+Competitors: ${lead.competitor || 'Local Competitors'}
+Contact Person: ${lead.contactPerson || 'Decision Maker'}
+
+IMPORTANT INSTRUCTIONS:
+${isLandline 
+  ? '- This business uses a LANDLINE number. DO NOT pitch WhatsApp bot or WhatsApp messaging. Instead pitch Inbound Call-to-Web Consultation Funnel and After-Hours online booking. Generate a 30-second telephone script for calling the landline.' 
+  : '- This business uses a MOBILE number eligible for WhatsApp. Pitch high-converting WhatsApp lead capture.'}
 
 Return strictly valid JSON only (no markdown, no backticks):
 {
@@ -121,9 +176,12 @@ Return strictly valid JSON only (no markdown, no backticks):
   "opportunity": "...",
   "recommendedService": "...",
   "shortPitch": "...",
+  "callScript": "...",
   "whatsappMessage": "...",
   "instagramMessage": "...",
-  "emailMessage": "..."
+  "emailMessage": "...",
+  "contactPerson": "...",
+  "competitor": "..."
 }`;
 
       const res = await axios.post(
@@ -135,7 +193,7 @@ Return strictly valid JSON only (no markdown, no backticks):
             { role: 'user', content: prompt }
           ],
           temperature: 0.6,
-          max_tokens: 1000
+          max_tokens: 1200
         },
         {
           headers: {
@@ -158,9 +216,14 @@ Return strictly valid JSON only (no markdown, no backticks):
           recommendedService: parsed.recommendedService || lead.recommendedServices?.[0],
           shortPitch: parsed.shortPitch
         },
-        whatsappMessage: parsed.whatsappMessage,
+        callScript: parsed.callScript || generateDeterministicPitch(lead).callScript,
+        whatsappMessage: isLandline 
+          ? `[LANDLINE NUMBER - WhatsApp Messaging Ineligible]\nThis business uses landline ${lead.phone || ''}. Standard WhatsApp messages cannot be delivered. Use the Phone Call Script or Cold Email outreach to connect with the decision-maker.`
+          : (parsed.whatsappMessage || generateDeterministicPitch(lead).whatsappMessage),
         instagramMessage: parsed.instagramMessage,
-        emailMessage: parsed.emailMessage
+        emailMessage: parsed.emailMessage,
+        contactPerson: parsed.contactPerson || lead.contactPerson || 'Owner / Managing Director',
+        competitor: parsed.competitor || lead.competitor || 'Local Competitors'
       };
     } catch (err) {
       await Log.create({
@@ -173,79 +236,7 @@ Return strictly valid JSON only (no markdown, no backticks):
     }
   }
 
-  // If rule-engine or API key missing, run deterministic synthesizer
-  if (provider === 'rule-engine' || !apiKey || apiKey.trim() === '') {
-    return generateDeterministicPitch(lead);
-  }
-
-  // If OpenAI provider configured
-  if (provider === 'openai') {
-    try {
-      const prompt = `You are a senior lead generation copywriter for Pixie Digital Creatives (PDC).
-Generate a factual, non-spammy, high-converting pitch for:
-Business Name: ${lead.businessName}
-Category: ${lead.category}
-Location: ${lead.location}
-Google Rating: ${lead.rating} (${lead.reviewCount} reviews)
-Website Status: ${lead.websiteStatus}
-Digital Gaps: ${lead.digitalGaps.join(', ')}
-Digital Strengths: ${lead.digitalStrengths.join(', ')}
-Recommended Service: ${lead.recommendedServices.join(', ')}
-
-Return strictly valid JSON with keys:
-{
-  "problem": "...",
-  "observation": "...",
-  "opportunity": "...",
-  "recommendedService": "...",
-  "shortPitch": "...",
-  "whatsappMessage": "...",
-  "instagramMessage": "...",
-  "emailMessage": "..."
-}`;
-
-      const res = await axios.post(
-        'https://api.openai.com/v1/chat/completions',
-        {
-          model: model || 'gpt-4o-mini',
-          messages: [{ role: 'user', content: prompt }],
-          response_format: { type: 'json_object' },
-          temperature: 0.7
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
-          },
-          timeout: 10000
-        }
-      );
-
-      const parsed = JSON.parse(res.data.choices[0].message.content);
-      return {
-        pitch: {
-          problem: parsed.problem,
-          observation: parsed.observation,
-          opportunity: parsed.opportunity,
-          recommendedService: parsed.recommendedService || lead.recommendedServices?.[0],
-          shortPitch: parsed.shortPitch
-        },
-        whatsappMessage: parsed.whatsappMessage,
-        instagramMessage: parsed.instagramMessage,
-        emailMessage: parsed.emailMessage
-      };
-    } catch (err) {
-      await Log.create({
-        level: 'WARN',
-        category: 'AI_PITCH',
-        message: `OpenAI pitch generation failed: ${err.message}. Used deterministic fallback.`,
-        details: { error: err.message }
-      });
-      return generateDeterministicPitch(lead);
-    }
-  }
-
-  // Fallback
+  // Fallback to deterministic synthesizer
   return generateDeterministicPitch(lead);
 };
 

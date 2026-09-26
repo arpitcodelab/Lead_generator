@@ -7,6 +7,7 @@ const Log = require('../models/Log');
 const { calculateLeadScore } = require('./scoringService');
 const { evaluateDigitalPresence } = require('./digitalGapService');
 const { generateDeterministicPitch } = require('./aiService');
+const { classifyPhone } = require('../utils/phoneClassifier');
 const { defaultLeadScoreRules, defaultIndustries, defaultLocations, exportPreferences } = require('../config/defaultSettings');
 
 /**
@@ -461,8 +462,14 @@ const seedDatabase = async (forceReset = false) => {
         notes: `Verified live audit for ${raw.websiteStatus}`
       };
 
+      const phoneClassification = classifyPhone(raw.phone);
       const leadDoc = {
         ...raw,
+        phoneType: phoneClassification.phoneType,
+        whatsappEligible: phoneClassification.whatsappEligible,
+        callScript: '',
+        competitor: raw.competitor || (raw.category === 'Gym' ? "Cult.fit, Anytime Fitness, Gold's Gym" : raw.category === 'Clinic' ? 'Apollo Clinic, Max Healthcare' : 'Local Competitors'),
+        contactPerson: raw.contactPerson && raw.contactPerson !== 'NOT FOUND' ? raw.contactPerson : (raw.category === 'Gym' ? 'Owner / Head Coach' : raw.category === 'Clinic' ? 'Clinic Director / Chief Doctor' : 'Owner / Managing Director'),
         websiteAudit: audit,
         campaignId: sampleCampaign._id,
         googleMapsUrl: `https://maps.google.com/?q=${encodeURIComponent(raw.businessName + ' ' + raw.location)}`,
@@ -482,6 +489,7 @@ const seedDatabase = async (forceReset = false) => {
       // Synthesize realistic pitches
       const pitches = generateDeterministicPitch(leadDoc);
       leadDoc.pitch = pitches.pitch;
+      leadDoc.callScript = pitches.callScript || '';
       leadDoc.whatsappMessage = pitches.whatsappMessage;
       leadDoc.instagramMessage = pitches.instagramMessage;
       leadDoc.emailMessage = pitches.emailMessage;

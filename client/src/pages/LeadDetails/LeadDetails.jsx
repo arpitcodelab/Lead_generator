@@ -198,6 +198,15 @@ export const LeadDetails = ({ lead: initialLead, onUpdate, onClose }) => {
               </span>
               <Badge value={lead.scoreClassification} />
               <Badge value={lead.websiteStatus} />
+              {lead.phoneType === 'LANDLINE' ? (
+                <span style={{ padding: '2px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: '700', backgroundColor: '#312E81', color: '#C7D2FE', border: '1px solid #4338CA' }}>
+                  ☎ LANDLINE
+                </span>
+              ) : lead.phoneType === 'MOBILE' ? (
+                <span style={{ padding: '2px 8px', borderRadius: '4px', fontSize: '10px', fontWeight: '700', backgroundColor: '#064E3B', color: '#A7F3D0', border: '1px solid #059669' }}>
+                  📱 MOBILE (WHATSAPP)
+                </span>
+              ) : null}
             </div>
             <h2 style={{ fontSize: '20px', fontWeight: '800', color: '#FFFFFF', margin: 0 }}>
               {lead.businessName}
@@ -461,32 +470,72 @@ export const LeadDetails = ({ lead: initialLead, onUpdate, onClose }) => {
             </div>
           </div>
 
-          {/* WhatsApp Message */}
-          <div className="card">
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '700', color: '#25D366' }}>
-                WhatsApp Direct Outreach Template
+          {/* Phone Call Script (Especially for Landline Outreach) */}
+          {(lead.callScript || lead.phoneType === 'LANDLINE') && (
+            <div className="card" style={{ borderColor: lead.phoneType === 'LANDLINE' ? '#4F46E5' : '#232332' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '700', color: '#818CF8' }}>
+                  <FiPhone /> Phone Outreach Call Script {lead.phoneType === 'LANDLINE' ? '(Primary Landline Outreach)' : ''}
+                </div>
+                <button
+                  onClick={() => handleCopy(lead.callScript || lead.pitch?.shortPitch, 'call')}
+                  className="btn btn-secondary btn-sm"
+                >
+                  {copiedKey === 'call' ? <FiCheck /> : <FiCopy />} Copy Script
+                </button>
               </div>
-              <button
-                onClick={() => handleCopy(lead.whatsappMessage, 'wa')}
-                className="btn btn-secondary btn-sm"
-              >
-                {copiedKey === 'wa' ? <FiCheck /> : <FiCopy />} Copy
-              </button>
+              <div style={{
+                backgroundColor: '#0C0C18',
+                border: '1px solid #1E1E38',
+                borderRadius: '8px',
+                padding: '14px',
+                fontSize: '12px',
+                color: '#E0E7FF',
+                whiteSpace: 'pre-line',
+                lineHeight: '1.6'
+              }}>
+                {lead.callScript || lead.pitch?.shortPitch}
+              </div>
             </div>
-            <div style={{
-              backgroundColor: '#0A120D',
-              border: '1px solid #153320',
-              borderRadius: '8px',
-              padding: '14px',
-              fontSize: '12px',
-              color: '#D1D5DB',
-              whiteSpace: 'pre-line',
-              fontFamily: 'Segoe UI, sans-serif'
-            }}>
-              {lead.whatsappMessage}
+          )}
+
+          {/* WhatsApp Message */}
+          {lead.phoneType === 'LANDLINE' ? (
+            <div className="card" style={{ border: '1px dashed #374151', opacity: 0.85 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', fontWeight: '700', color: '#9CA3AF' }}>
+                <FiPhone /> WhatsApp Messaging Ineligible (Landline Number: {lead.phone})
+              </div>
+              <div style={{ fontSize: '11px', color: '#6B7280', marginTop: '6px', lineHeight: '1.5' }}>
+                Standard WhatsApp messages cannot be delivered to Indian landlines. Please use the Phone Call Script above or Cold Email to connect with the owner or manager.
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="card">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: '700', color: '#25D366' }}>
+                  WhatsApp Direct Outreach Template
+                </div>
+                <button
+                  onClick={() => handleCopy(lead.whatsappMessage, 'wa')}
+                  className="btn btn-secondary btn-sm"
+                >
+                  {copiedKey === 'wa' ? <FiCheck /> : <FiCopy />} Copy
+                </button>
+              </div>
+              <div style={{
+                backgroundColor: '#0A120D',
+                border: '1px solid #153320',
+                borderRadius: '8px',
+                padding: '14px',
+                fontSize: '12px',
+                color: '#D1D5DB',
+                whiteSpace: 'pre-line',
+                fontFamily: 'Segoe UI, sans-serif'
+              }}>
+                {lead.whatsappMessage}
+              </div>
+            </div>
+          )}
 
           {/* Instagram DM */}
           <div className="card">

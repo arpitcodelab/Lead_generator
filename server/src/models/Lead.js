@@ -40,6 +40,20 @@ const leadSchema = new mongoose.Schema({
     default: 'NOT FOUND',
     index: true
   },
+  phoneType: {
+    type: String,
+    enum: ['MOBILE', 'LANDLINE', 'UNKNOWN'],
+    default: 'UNKNOWN',
+    index: true
+  },
+  whatsappEligible: {
+    type: Boolean,
+    default: true
+  },
+  callScript: {
+    type: String,
+    default: ''
+  },
   email: {
     type: String,
     default: 'NOT FOUND'
