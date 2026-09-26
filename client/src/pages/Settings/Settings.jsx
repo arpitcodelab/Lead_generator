@@ -11,14 +11,23 @@ import {
   FiDatabase,
   FiCheckCircle,
   FiAlertCircle,
-  FiShield
+  FiShield,
+  FiServer,
+  FiWifi,
+  FiRefreshCw
 } from 'react-icons/fi';
+import { getApiBaseUrl, setApiBaseUrl, checkHealth } from '../../services/api';
 
 export const Settings = () => {
   const [settings, setSettings] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [seeding, setSeeding] = useState(false);
+
+  // Backend API URL Configuration
+  const [apiUrl, setApiUrl] = useState(getApiBaseUrl());
+  const [testingApi, setTestingApi] = useState(false);
+  const [apiTestStatus, setApiTestStatus] = useState(null);
 
   // Form states
   const [googleApiKey, setGoogleApiKey] = useState('');
@@ -31,6 +40,31 @@ export const Settings = () => {
 
   const { addToast } = useToast();
   const { isAdmin } = useAuth();
+
+  const handleTestApi = async () => {
+    setTestingApi(true);
+    setApiTestStatus(null);
+    try {
+      setApiBaseUrl(apiUrl);
+      const health = await checkHealth();
+      if (health.isOnline) {
+        setApiTestStatus({ success: true, message: `Connected! (${health.service})` });
+        addToast('Backend API connected successfully!', 'success');
+      } else {
+        setApiTestStatus({ success: false, message: `Offline: Cannot reach ${apiUrl || '/api'}. Check URL or CORS.` });
+        addToast('Could not connect to backend server', 'error');
+      }
+    } finally {
+      setTestingApi(false);
+    }
+  };
+
+  const handleSaveApiUrl = (e) => {
+    e?.preventDefault();
+    setApiBaseUrl(apiUrl);
+    addToast(`Backend API URL saved: ${apiUrl || '/api'}`, 'success');
+    handleTestApi();
+  };
 
   useEffect(() => {
     const fetchSettings = async () => {
@@ -120,6 +154,60 @@ export const Settings = () => {
       </div>
 
       <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+        {/* SECTION 0: BACKEND API CONNECTION */}
+        <div className="card" style={{ border: '1px solid rgba(59, 130, 246, 0.3)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px', flexWrap: 'wrap', gap: '8px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: '700', color: '#FFFFFF', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <FiServer style={{ color: '#60A5FA' }} /> BACKEND API SERVER CONNECTION
+            </h3>
+            {apiTestStatus && (
+              <span style={{
+                fontSize: '11px',
+                fontWeight: '700',
+                padding: '4px 10px',
+                borderRadius: '6px',
+                backgroundColor: apiTestStatus.success ? 'rgba(16, 185, 129, 0.15)' : 'rgba(239, 68, 68, 0.15)',
+                color: apiTestStatus.success ? '#34D399' : '#F87171'
+              }}>
+                {apiTestStatus.message}
+              </span>
+            )}
+          </div>
+          <p style={{ fontSize: '12px', color: '#9CA3AF', margin: '0 0 16px 0' }}>
+            When running on static hosts (like GitHub Pages), enter the live URL of your deployed Express backend (e.g. Render, Railway, or ngrok tunnel). If running locally with Vite, leave empty or set to <code>/api</code>.
+          </p>
+
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-end', flexWrap: 'wrap' }}>
+            <div className="form-group" style={{ flex: '1', minWidth: '280px', margin: 0 }}>
+              <label>Backend API Base URL</label>
+              <input
+                type="text"
+                className="input-control"
+                placeholder="e.g. https://your-backend.onrender.com/api or /api"
+                value={apiUrl}
+                onChange={(e) => setApiUrl(e.target.value)}
+              />
+            </div>
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleTestApi}
+              disabled={testingApi}
+              style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+            >
+              <FiWifi /> {testingApi ? 'Testing...' : 'Test Connection'}
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handleSaveApiUrl}
+              style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+            >
+              <FiSave /> Save API URL
+            </button>
+          </div>
+        </div>
+
         {/* SECTION 1: API CREDENTIALS & PROVIDERS */}
         <div className="card">
           <h3 style={{ fontSize: '14px', fontWeight: '700', color: '#FFFFFF', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>

@@ -1,10 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FiPlus, FiGlobe, FiZap, FiActivity } from 'react-icons/fi';
+import { checkHealth, getApiBaseUrl } from '../../services/api';
+import { FiPlus, FiGlobe, FiServer, FiSettings } from 'react-icons/fi';
 
 export const TopNav = ({ title, subtitle }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [backendStatus, setBackendStatus] = useState({ online: false, checked: false });
+
+  useEffect(() => {
+    let mounted = true;
+    const testStatus = async () => {
+      const res = await checkHealth();
+      if (mounted) {
+        setBackendStatus({ online: res.isOnline, checked: true });
+      }
+    };
+    testStatus();
+    const interval = setInterval(testStatus, 15000);
+    return () => {
+      mounted = false;
+      clearInterval(interval);
+    };
+  }, []);
+
+  const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
 
   return (
     <header style={{
@@ -41,29 +61,39 @@ export const TopNav = ({ title, subtitle }) => {
 
       {/* Action Center */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-        {/* System Status Pill */}
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          padding: '6px 14px',
-          backgroundColor: '#0F1017',
-          border: '1px solid rgba(255, 255, 255, 0.08)',
-          borderRadius: '9999px',
-          fontSize: '11px',
-          color: '#E2E8F0',
-          boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
-        }}>
+        {/* Dynamic Backend Status Pill */}
+        <div
+          onClick={() => navigate('/settings')}
+          title="Click to configure backend API endpoint in Settings"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            padding: '6px 14px',
+            backgroundColor: '#0F1017',
+            border: backendStatus.online ? '1px solid rgba(16, 185, 129, 0.3)' : '1px solid rgba(245, 158, 11, 0.3)',
+            borderRadius: '9999px',
+            fontSize: '11px',
+            color: '#E2E8F0',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
+            cursor: 'pointer',
+            transition: 'all 0.2s ease'
+          }}
+        >
           <span style={{
             width: '8px',
             height: '8px',
             borderRadius: '50%',
-            backgroundColor: '#10B981',
-            boxShadow: '0 0 10px #10B981'
+            backgroundColor: backendStatus.online ? '#10B981' : '#F59E0B',
+            boxShadow: backendStatus.online ? '0 0 10px #10B981' : '0 0 10px #F59E0B'
           }} />
-          <span style={{ fontWeight: '700', color: '#F8FAFC' }}>Scraper Engine</span>
+          <span style={{ fontWeight: '700', color: '#F8FAFC' }}>
+            {backendStatus.online ? 'Backend Connected' : (isGitHubPages ? 'Demo Mode' : 'Backend Offline')}
+          </span>
           <span style={{ color: '#4B5563' }}>•</span>
-          <span style={{ color: '#94A3B8' }}>Google & AI Ready</span>
+          <span style={{ color: backendStatus.online ? '#34D399' : '#FBBF24' }}>
+            {backendStatus.online ? 'API Live' : 'Static Host'}
+          </span>
         </div>
 
         {/* Audit Tool Button */}
@@ -91,3 +121,4 @@ export const TopNav = ({ title, subtitle }) => {
     </header>
   );
 };
+export default TopNav;

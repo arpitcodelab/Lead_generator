@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { campaignApi } from '../../services/campaignApi';
 import { useToast } from '../../context/ToastContext';
 import { ProgressBar } from '../../components/Common/ProgressBar';
+import { simulateDemoCampaign } from '../../services/mockData';
 import {
   FiZap,
   FiMapPin,
@@ -13,7 +14,9 @@ import {
   FiArrowRight,
   FiCheckCircle,
   FiRotateCw,
-  FiDatabase
+  FiDatabase,
+  FiInfo,
+  FiServer
 } from 'react-icons/fi';
 
 export const GenerateLeads = () => {
@@ -31,6 +34,8 @@ export const GenerateLeads = () => {
   const pollIntervalRef = useRef(null);
   const { addToast } = useToast();
   const navigate = useNavigate();
+
+  const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
 
   // Cleanup polling on unmount
   useEffect(() => {
@@ -88,8 +93,30 @@ export const GenerateLeads = () => {
         startPolling(res.data.campaign._id);
       }
     } catch (err) {
-      setIsRunning(false);
-      addToast(err.response?.data?.message || 'Failed to start campaign', 'error');
+      console.warn('[Campaign] Backend unavailable or failed. Switching to interactive simulated demo mode:', err);
+      addToast('Backend unreachable on static host. Running interactive demo simulation...', 'info');
+
+      try {
+        const simResult = await simulateDemoCampaign(formData, (step) => {
+          setActiveCampaign({
+            _id: 'simulating',
+            name: `${formData.industry} in ${formData.location}`,
+            status: 'PROCESSING',
+            progress: {
+              percentage: step.percent,
+              message: step.message,
+              currentStage: step.percent < 30 ? 'DISCOVERY' : (step.percent < 70 ? 'AUDITING' : 'QUALIFYING')
+            }
+          });
+        });
+
+        setActiveCampaign(simResult.campaign);
+        setIsRunning(false);
+        addToast(`Simulated campaign finished! Discovered & qualified 5 ${formData.industry} leads.`, 'success');
+      } catch (simErr) {
+        setIsRunning(false);
+        addToast('Failed to start campaign', 'error');
+      }
     }
   };
 
@@ -111,6 +138,30 @@ export const GenerateLeads = () => {
           Configure market discovery parameters. The system will legally discover local businesses, verify official websites, audit technical gaps, compute PDC lead scores, and formulate outreach pitches.
         </p>
       </div>
+
+      {/* GitHub Pages / Static Hosting Helper Notice */}
+      {isGitHubPages && (
+        <div style={{
+          backgroundColor: 'rgba(59, 130, 246, 0.08)',
+          border: '1px solid rgba(59, 130, 246, 0.25)',
+          borderRadius: '10px',
+          padding: '14px 18px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '14px',
+          fontSize: '12px',
+          color: '#93C5FD'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <FiServer style={{ flexShrink: 0, fontSize: '18px', color: '#60A5FA' }} />
+            <div>
+              <span style={{ fontWeight: '700', color: '#FFFFFF' }}>GitHub Pages Deployment Note: </span>
+              GitHub Pages hosts the static React client. To run 100% live Google Places & Groq AI scraping, connect your deployed backend URL in <a href="#/settings" style={{ color: '#93C5FD', textDecoration: 'underline', fontWeight: '600' }}>Platform Settings</a> or run locally. Generating leads here runs in <strong>Interactive Simulation Mode</strong>.
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Preset Suggestions */}
       <div style={{

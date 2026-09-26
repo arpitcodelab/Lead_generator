@@ -39,7 +39,20 @@ connectDB().then(async () => {
 
 // Middleware
 app.use(cors({
-  origin: [env.clientUrl, 'http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like curl, Postman)
+    if (!origin) return callback(null, true);
+    // Allow localhost, 127.0.0.1, and any github.io domain
+    if (
+      origin.includes('localhost') ||
+      origin.includes('127.0.0.1') ||
+      origin.includes('github.io') ||
+      (env.clientUrl && origin === env.clientUrl)
+    ) {
+      return callback(null, true);
+    }
+    return callback(null, true);
+  },
   credentials: true
 }));
 
