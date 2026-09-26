@@ -27,7 +27,8 @@ const api = axios.create({
   baseURL: getApiBaseUrl(),
   timeout: 15000,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    'Bypass-Tunnel-Reminder': 'true'
   }
 });
 
@@ -53,7 +54,10 @@ api.interceptors.response.use(
 export const checkHealth = async () => {
   try {
     const base = getApiBaseUrl();
-    const res = await axios.get(`${base}/health`, { timeout: 3000 });
+    const res = await axios.get(`${base}/health`, {
+      timeout: 5000,
+      headers: { 'Bypass-Tunnel-Reminder': 'true' }
+    });
     return { isOnline: res.data?.status === 'OK', service: res.data?.service || 'Active API' };
   } catch (err) {
     return { isOnline: false, error: err.message };
