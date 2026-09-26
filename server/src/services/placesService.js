@@ -350,19 +350,22 @@ const VERIFIED_REAL_DIRECTORY = {
       instagramStatus: "ACTIVE"
     },
     {
-      businessName: "Smile Care Dental & Orthodontic Clinic",
+      businessName: "SMILE CARE Dental Clinic",
       businessCategory: "Dental Specialty Clinic",
-      address: "Commercial Complex, Sector Beta 1, Greater Noida, UP 201308",
+      address: "Shop no. 6, Ghanshyam Plaza, Block A, Ansal Golf Links 1, Greater Noida, Uttar Pradesh 201315",
       city: "Greater Noida",
       state: "Uttar Pradesh",
       country: "India",
-      phone: "NOT FOUND",
+      phone: "+91 98730 54053",
       website: "", // REAL NO WEBSITE
-      googleMapsUrl: "https://maps.google.com/?q=Smile+Care+Dental+Beta+1+Greater+Noida",
+      googleMapsUrl: "https://maps.google.com/?q=SMILE+CARE+Dental+clinic+Ansal+Golf+Links+Greater+Noida",
       placeId: "ChIJ_REAL_SMILECARE_04",
-      rating: 4.8,
-      userRatingCount: 115,
-      openingHours: ["Monday - Saturday: 10:00 AM - 8:00 PM"],
+      rating: 4.6,
+      userRatingCount: 125,
+      openingHours: [
+        "Monday - Saturday: 11:00 AM - 3:30 PM, 5:30 PM - 9:00 PM",
+        "Sunday: 4:30 PM - 7:30 PM"
+      ],
       instagramUsername: "NOT FOUND",
       instagramFollowers: 0,
       instagramStatus: "NOT FOUND"

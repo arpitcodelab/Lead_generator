@@ -391,15 +391,15 @@ const seedDatabase = async (forceReset = false) => {
         stage: 'REPLIED'
       },
       {
-        businessName: 'Smile Care Dental & Orthodontic Clinic',
+        businessName: 'SMILE CARE Dental Clinic',
         category: 'Clinic',
         location: 'Greater Noida',
-        address: 'Commercial Complex, Sector Beta 1, Greater Noida, UP 201308',
-        phone: 'NOT FOUND',
+        address: 'Shop no. 6, Ghanshyam Plaza, Block A, Ansal Golf Links 1, Greater Noida, Uttar Pradesh 201315',
+        phone: '+91 98730 54053',
         email: 'NOT FOUND',
-        contactPerson: 'Dr. Dental Specialist',
-        rating: 4.8,
-        reviewCount: 115,
+        contactPerson: 'Dr. Bhupendra Singh',
+        rating: 4.6,
+        reviewCount: 125,
         placeId: 'ChIJ_REAL_SMILECARE_04',
         website: '',
         websiteStatus: 'NO WEBSITE',
@@ -410,7 +410,10 @@ const seedDatabase = async (forceReset = false) => {
         instagramFollowers: 0,
         instagramStatus: 'NOT FOUND',
         stage: 'HOT',
-        notes: [{ text: '4.8★ across 115 patient reviews. Missing official website and online appointment calendar.', author: 'PDC Admin' }]
+        score: 85,
+        qualificationSummary: 'Established 4.6★ dental clinic led by Dr. Bhupendra Singh (16 yrs exp, ex-faculty ITS Dental College). Genuinely has NO website. Prime candidate for online patient consultation & appointment booking system.',
+        aiPersonalizedPitch: 'Dear Dr. Bhupendra Singh, your SMILE CARE Dental clinic in Ansal Golf Links 1 has an exceptional reputation (4.6★) across Greater Noida. However, prospective patients searching online cannot book appointments or view dental services on a website. We can deploy a dedicated patient appointment booking portal for your clinic.',
+        notes: [{ text: '4.6★ across 125 patient reviews. Missing official website and online appointment calendar.', author: 'PDC Admin' }]
       },
       {
         businessName: 'City Skin & Laser Aesthetics Centre',
