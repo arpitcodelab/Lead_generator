@@ -60,16 +60,21 @@ const seedDatabase = async (forceReset = false) => {
       ]
     });
 
-    if (hasFakeLeads > 0 || forceReset) {
-      console.log(`[Seed] Purging ${hasFakeLeads} legacy/simulated leads to ensure 100% real data...`);
-      await Lead.deleteMany({});
-      await Campaign.deleteMany({});
-      await Outreach.deleteMany({});
-    } else {
-      const existingCount = await Lead.countDocuments();
-      if (existingCount > 0) {
-        return { message: `Database already populated with ${existingCount} verified real leads.`, count: existingCount };
-      }
+    if (hasFakeLeads > 0) {
+      console.log(`[Seed] Purging ${hasFakeLeads} legacy/simulated leads...`);
+      await Lead.deleteMany({
+        $or: [
+          { instagramUsername: /pro18/i },
+          { website: /\.test/i },
+          { businessName: /Pro \d+/i }
+        ]
+      });
+    }
+
+    // Do NOT insert prototype leads on startup — preserve only real scraped leads
+    if (!forceReset) {
+      const liveCount = await Lead.countDocuments();
+      return { message: `Database running with ${liveCount} real scraped leads.`, count: liveCount };
     }
 
     // 3. Create Sample Baseline Campaign
