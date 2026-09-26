@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>
+        Google Maps Scraper : Free & Easy to Use | Maps Scraper
+    </title>
+    <meta name="description"
+          content="A scraping tool for map business leads, one click to extract data from Google Maps or Bing Maps, includes phone number, email address, social media profiles, and more."/>
+    <meta name="keywords"
+          content="Maps Scraper, Bing Maps Scraper, Google Maps Scraper, Scrape Maps, Scrape Bing Maps, Scrape Google Maps, Maps Data Scraper, Maps Business Scraper"/>
+    <meta name="author" content=""/>
+    <script data-n-head="ssr" type="application/ld+json">{
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@id": "https://mapsscraper.net/#identity",
+                "@type": "Organization",
+                "name": "Maps Scraper",
+                "url": "https://mapsscraper.net",
+                "logo": {
+                    "@id": "https://mapsscraper.net/#logo"
+                },
+                "sameAs": [
+                    "https://chrome.google.com/webstore/detail/maps-scraper-map-data-ext/ofbhiclojhjkggpnapcnjjjdjlgcikdf"
+                ]
+            },
+            {
+                "@id": "https://mapsscraper.net/#website",
+                "@type": "WebSite",
+                "name": "Maps Scraper",
+                "url": "https://mapsscraper.net",
+                "publisher": {
+                    "@id": "https://mapsscraper.net/#identity"
+                }
+            },
+            {
+                "@id": "https://mapsscraper.net/#webpage",
+                "@type": "WebPage",
+                "description": "A scraping tool for map business leads, one click to extract data from Google Maps or Bing Maps, includes phone number, email address, social media profiles, and more.",
+                "name": "Maps Scraper",
+                "url": "https://mapsscraper.net",
+                "about": {
+                    "@id": "https://mapsscraper.net/#identity"
+                },
+                "isPartOf": {
+                    "@id": "https://mapsscraper.net/#website"
+                },
+                "potentialAction": [
+                    {
+                        "@type": "ReadAction",
+                        "target": [
+                            "https://mapsscraper.net"
+                        ]
+                    }
+                ],
+                "primaryImageOfPage": {
+                    "@id": "https://mapsscraper.net/#logo"
+                }
+            },
+            {
+                "@id": "https://mapsscraper.net/#logo",
+                "@type": "ImageObject",
+                "caption": "Maps Scraper",
+                "contentUrl": "https://mapsscraper.net/images/maps-scraper.png",
+                "url": "https://mapsscraper.net/images/logo.png"
+            }
+        ]
+    }</script>
+
+
+    <meta property="og:title" content="Google Maps Scraper : Free & Easy to Use | Maps Scraper"/>
+    <meta property="og:description" content="A scraping tool for map business leads, one click to extract data from Google Maps or Bing Maps, includes phone number, email address, social media profiles, and more."/>
+    <meta property="og:url" content="https://mapsscraper.net/"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:image" content="https://mapsscraper.net/images/maps-scraper.png"/>
+    <meta property="og:image:alt" content="The Most Powerful, All-in-One Maps Scraper."/>
+    <meta property="og:image:width" content="440"/>
+    <meta property="og:image:height" content="280"/>
+    <meta property="og:site_name" content="MapsScraper.net"/>
+
+    <link rel="canonical" href="https://mapsscraper.net/"/>
+    <meta property="article:author" content="https://x.com/MapsScraper_net"/>
+    <meta property="author" content="Maps Scraper"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"/>
+
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="https://unpkg.com/tailwindcss@2.2.19/dist/tailwind.min.css"/>
+    <!--Replace with your tailwind.css once created-->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet"/>
+    <!-- Define your gradient here - use online tools to find a gradient matching your branding-->
+    <style>
+        .gradient {
+            background: linear-gradient(90deg, #244f18 0%, #50bb2c 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body class="leading-normal tracking-normal text-white gradient" style="font-family: 'Source Sans Pro', sans-serif;">
+<!--Nav-->
+<nav id="header" class="fixed w-full z-50 top-0 text-white">
+    <div class="w-full container mx-auto flex flex-wrap items-center justify-between mt-0 py-2">
+        <div class="pl-4 flex items-center">
+            <a class="toggleColour text-white no-underline hover:no-underline font-bold text-2xl lg:text-4xl flex flex-row items-center"
+               title="logo" href="/">
+                <!--Icon from: http://www.potlabicons.com/ -->
+                <img class="h-8 mr-2" src="./images/logo.png" alt="Maps Scraper">
+                MapsScraper
+            </a>
+        </div>
+        <div class="block lg:hidden pr-4">
+            <button id="nav-toggle"
+                    class="flex items-center p-1 text-pink-800 hover:text-gray-900 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-100 ease-in-out">
+                <svg class="fill-current h-6 w-6" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                    <title>Menu</title>
+                    <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z"/>
+                </svg>
+            </button>
+        </div>
+        <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto hidden mt-2 lg:mt-0 bg-white lg:bg-transparent text-black p-4 lg:p-0 z-20"
+             id="nav-content">
+            <ul class="list-reset lg:flex justify-end flex-1 items-center">
+                <li class="mr-3">
+                    <a class="inline-block py-2 px-4 text-black font-bold no-underline" href="#Features">Features</a>
+                </li>
+                <li class="mr-3">
+                    <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
+                       href="#Pricing">Pricing</a>
+                </li>
+                <li class="mr-3">
+                    <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
+                       href="#FAQ">FAQ</a>
+                </li>
+                <li class="mr-3">
+                    <a class="inline-block text-black no-underline hover:text-gray-800 hover:text-underline py-2 px-4"
+                       href="#Contact">Contact us</a>
+                </li>
+            </ul>
+            <a
+                    id="navAction"
+                    class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full mt-4 lg:mt-0 py-4 px-8 shadow opacity-75 focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-100 ease-in-out"
+                    href="https://chrome.google.com/webstore/detail/maps-scraper-map-data-ext/ofbhiclojhjkggpnapcnjjjdjlgcikdf" target="_blank">
+                Add To Chrome
+            </a>
+        </div>
+    </div>
+    <hr class="border-b border-gray-100 opacity-25 my-0 py-0"/>
+</nav>
+<!--Hero-->
+<div class="pt-24">
+    <div class="container px-3 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+        <!--Left Col-->
+        <div class="flex flex-col w-full md:w-1/2 justify-center items-start text-center md:text-left">
+            <h1 class="my-4 text-5xl font-bold leading-tight">
+                Maps Scraper
+            </h1>
+            <p class="leading-normal text-2xl mb-8">
+                A scraping tool for map business leads, one click to extract data from Google Maps or Bing Maps, includes phone number, email address, social media profiles, and more.
+            </p>
+            <!--<a class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-100 ease-in-out z-10"
+               href="https://chrome.google.com/webstore/detail/maps-scraper-map-data-ext/ofbhiclojhjkggpnapcnjjjdjlgcikdf" target="_blank">
+                Add To Chrome
+            </a>-->
+
+            <div class="mt-6 mb-4 px-4 pt-6 pb-4 flex flex-row flex-wrap justify-center items-end relative z-40">
+                <div class="mx-2 mb-4 text-center">
+<!--                    <div class="text-sm text-gray-200 mb-2">Quick Start</div>-->
+                    <a class="hover:underline bg-white text-gray-700 font-medium rounded-full py-4 px-8 shadow-sm focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-100 ease-in-out z-40 inline-block border border-gray-300 relative"
+                       href="https://chrome.google.com/webstore/detail/maps-scraper-map-data-ext/ofbhiclojhjkggpnapcnjjjdjlgcikdf" target="_blank">
+                        🎉 Get Bing Maps Scraper (free)
+                    </a>
+                </div>
+                <div class="mx-2 mb-4 text-center relative">
+                    <div class="absolute -top-3 -right-2 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full z-40 shadow-lg whitespace-nowrap">Best Choice</div>
+<!--                    <div class="text-sm text-yellow-300 mb-2">For Professional Users</div>-->
+                    <a class="hover:underline bg-gradient-to-r from-green-500 to-green-600 text-white font-bold rounded-full py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-100 ease-in-out z-30 border-2 border-green-400 inline-block relative"
+                       href="./google-maps-scraper.html" target="_self">
+                        🚀 Get Google Maps Scraper
+                    </a>
+                </div>
+            </div>
+        </div>
+        <!--Right Col-->
+        <!--        <img class="w-5 p-6 md:w-4/5 z-50" src="images/maps-scraper.png" />-->
+        <div class="w-full md:w-1/2 py-6 flex flex-row items-center justify-center">
+            <img class="w-full md:w-3/5" alt="Maps Scraper" src="images/maps-scraper.png"/>
+        </div>
+    </div>
+</div>
+<div class="relative -mt-12 lg:-mt-24">
+    <svg viewBox="0 0 1428 174" version="1.1" xmlns="http://www.w3.org/2000/svg"
+         xmlns:xlink="http://www.w3.org/1999/xlink">
+        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+            <g transform="translate(-2.000000, 44.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                <path d="M0,0 C90.7283404,0.927527913 147.912752,27.187927 291.910178,59.9119003 C387.908462,81.7278826 543.605069,89.334785 759,82.7326078 C469.336065,156.254352 216.336065,153.6679 0,74.9732496"
+                      opacity="0.100000001"></path>
+                <path
+                        d="M100,104.708498 C277.413333,72.2345949 426.147877,52.5246657 546.203633,45.5787101 C666.259389,38.6327546 810.524845,41.7979068 979,55.0741668 C931.069965,56.122511 810.303266,74.8455141 616.699903,111.243176 C423.096539,147.640838 250.863238,145.462612 100,104.708498 Z"
+                        opacity="0.100000001"
+                ></path>
+                <path d="M1046,51.6521276 C1130.83045,29.328812 1279.08318,17.607883 1439,40.1656806 L1439,120 C1271.17211,77.9435312 1140.17211,55.1609071 1046,51.6521276 Z"
+                      id="Path-4" opacity="0.200000003"></path>
+            </g>
+            <g transform="translate(-4.000000, 76.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                <path
+                        d="M0.457,34.035 C57.086,53.198 98.208,65.809 123.822,71.865 C181.454,85.495 234.295,90.29 272.033,93.459 C311.355,96.759 396.635,95.801 461.025,91.663 C486.76,90.01 518.727,86.372 556.926,80.752 C595.747,74.596 622.372,70.008 636.799,66.991 C663.913,61.324 712.501,49.503 727.605,46.128 C780.47,34.317 818.839,22.532 856.324,15.904 C922.689,4.169 955.676,2.522 1011.185,0.432 C1060.705,1.477 1097.39,3.129 1121.236,5.387 C1161.703,9.219 1208.621,17.821 1235.4,22.304 C1285.855,30.748 1354.351,47.432 1440.886,72.354 L1441.191,104.352 L1.121,104.031 L0.457,34.035 Z"
+                ></path>
+            </g>
+        </g>
+    </svg>
+</div>
+<section class="bg-white border-b py-8" id="Features">
+    <div class="container max-w-5xl mx-auto m-8">
+        <h2 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
+            Features
+        </h2>
+        <div class="w-full mb-4">
+            <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
+        </div>
+        <div class="flex flex-wrap">
+            <div class="w-5/6 sm:w-1/2 p-6 flex flex-col justify-center">
+                <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">
+                    Easy Data Extraction
+                </h3>
+                <p class="text-gray-600 mb-8">
+                    Effortlessly extract detailed business information from Maps, such as addresses, phone numbers, emails, and social media profiles.
+                </p>
+            </div>
+            <div class="w-full sm:w-1/2 p-6">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                     xmlns:xlink="http://www.w3.org/1999/xlink" class="w-full sm:h-64 mx-auto" viewBox="0 0 1177 598.5"
+                     enable-background="new 0 0 960 540"
+                     xml:space="preserve">
+                    <rect fill="none" width="960" height="540"/>
+                    <rect fill="#FFFFFF" width="960" height="540"/>
+                    <g>
+                        <path fill="#B6EDAE" d="M688.481,385.335l38.184,38.184c12.888,12.887,12.888,33.781,0,46.669l0,0
+                            c-12.887,12.887-33.781,12.887-46.669,0l-38.184-38.184c-12.888-12.888-12.888-33.782,0-46.669l0,0
+                            C654.7,372.447,675.595,372.447,688.481,385.335z"/>
+                        <path fill="#B6EDAE" d="M221.633,91.284L324.87,194.521c10.154,10.153,10.154,26.616,0,36.77l0,0
+                            c-10.153,10.153-26.616,10.153-36.77,0L184.863,128.053c-10.154-10.154-10.154-26.616,0-36.77l0,0
+                            C195.017,81.13,211.479,81.13,221.633,91.284z"/>
+                        <path fill="#B6EDAE" d="M309.633,58.284L412.87,161.521c10.154,10.153,10.154,26.616,0,36.77l0,0
+                            c-10.153,10.153-26.616,10.153-36.77,0L272.863,95.053c-10.154-10.154-10.154-26.616,0-36.77l0,0
+                            C283.017,48.13,299.479,48.13,309.633,58.284z"/>
+                        <path fill="#B6EDAE" d="M689.844,291.881l57.275,57.275c7.615,7.615,7.615,19.962,0,27.577l0,0
+                            c-7.615,7.615-19.962,7.615-27.577,0l-57.275-57.275c-7.615-7.615-7.615-19.962,0-27.577l0,0
+                            C669.882,284.266,682.229,284.266,689.844,291.881z"/>
+                        <circle fill="#B6EDAE" cx="480" cy="270" r="242"/>
+                    </g>
+                    <g>
+                        <path fill="#3D3D63"
+                              d="M556,463h-98c-2.761,0-5-2.238-5-5s2.239-5,5-5h98c2.762,0,5,2.238,5,5S558.762,463,556,463z"/>
+                        <path fill="#3D3D63"
+                              d="M589,487H480c-2.761,0-5-2.238-5-5s2.239-5,5-5h109c2.762,0,5,2.238,5,5S591.762,487,589,487z"/>
+                        <path fill="#3D3D63"
+                              d="M403,463h-67c-2.761,0-5-2.238-5-5s2.239-5,5-5h67c2.761,0,5,2.238,5,5S405.761,463,403,463z"/>
+                        <path fill="#3D3D63"
+                              d="M701,487h-56c-2.762,0-5-2.238-5-5s2.238-5,5-5h56c2.762,0,5,2.238,5,5S703.762,487,701,487z"/>
+                        <path fill="#3D3D63"
+                              d="M439,487H283c-2.761,0-5-2.238-5-5s2.239-5,5-5h156c2.761,0,5,2.238,5,5S441.761,487,439,487z"/>
+                        <path fill="#3D3D63" d="M431,463c-1.32,0-2.6-0.53-3.54-1.47c-0.93-0.931-1.46-2.211-1.46-3.53c0-1.32,0.53-2.601,1.46-3.54
+                            c0.93-0.93,2.22-1.46,3.54-1.46c1.32,0,2.61,0.53,3.54,1.46c0.93,0.939,1.46,2.22,1.46,3.54c0,1.319-0.53,2.6-1.46,3.53
+                            C433.61,462.47,432.32,463,431,463z"/>
+                        <path fill="#3D3D63" d="M621,487c-1.311,0-2.601-0.53-3.54-1.47c-0.93-0.931-1.46-2.211-1.46-3.53c0-1.32,0.53-2.601,1.46-3.54
+                            c0.93-0.93,2.22-1.46,3.54-1.46c1.319,0,2.609,0.53,3.54,1.46c0.93,0.939,1.46,2.229,1.46,3.54c0,1.319-0.53,2.6-1.46,3.53
+                            C623.6,486.47,622.31,487,621,487z"/>
+                    </g>
+                    <g>
+                        <path fill="#B6EDAE" d="M802,312.213c-0.512,0-1.023-0.195-1.414-0.586l-21.213-21.213c-0.781-0.781-0.781-2.047,0-2.828
+                            l21.213-21.213c0.781-0.781,2.047-0.781,2.828,0l21.213,21.213c0.781,0.781,0.781,2.047,0,2.828l-21.213,21.213
+                            C803.023,312.018,802.512,312.213,802,312.213z M783.615,289L802,307.385L820.385,289L802,270.615L783.615,289z"/>
+                        <path fill="#B6EDAE" d="M228.101,218.9c-0.512,0-1.024-0.195-1.414-0.586l-9.899-9.899c-0.781-0.781-0.781-2.047,0-2.828
+                            l9.899-9.899c0.78-0.781,2.048-0.781,2.828,0l9.899,9.899c0.781,0.781,0.781,2.047,0,2.828l-9.899,9.899
+                            C229.125,218.705,228.613,218.9,228.101,218.9z M221.03,207l7.071,7.071l7.071-7.071l-7.071-7.071L221.03,207z"/>
+                        <path fill="#FFFFFF" d="M691,328.9c-0.53,0-1.039-0.211-1.414-0.586l-9.899-9.9c-0.781-0.781-0.781-2.047,0-2.828l9.899-9.899
+                            c0.781-0.781,2.047-0.781,2.828,0l9.899,9.899c0.781,0.781,0.781,2.047,0,2.828l-9.899,9.9C692.039,328.689,691.53,328.9,691,328.9
+                            z M683.929,317l7.071,7.072l7.071-7.072L691,309.929L683.929,317z"/>
+                        <path fill="#FFFFFF" d="M544,67.9c-0.512,0-1.023-0.195-1.414-0.586l-9.899-9.899c-0.781-0.781-0.781-2.047,0-2.828l9.899-9.899
+                            c0.781-0.781,2.047-0.781,2.828,0l9.899,9.899c0.781,0.781,0.781,2.047,0,2.828l-9.899,9.899C545.023,67.705,544.512,67.9,544,67.9
+                            z M536.929,56L544,63.071L551.071,56L544,48.93L536.929,56z"/>
+                        <g transform="translate(176 391)">
+                            <circle fill="none" cx="27.5" cy="27.5" r="27.5"/>
+                            <path fill="#B6EDAE" d="M27.5,55C12.336,55,0,42.663,0,27.5S12.336,0,27.5,0S55,12.337,55,27.5S42.664,55,27.5,55z M27.5,4
+                                C14.542,4,4,14.542,4,27.5S14.542,51,27.5,51S51,40.458,51,27.5S40.458,4,27.5,4z"/>
+                        </g>
+                        <g transform="translate(194 100)">
+                            <circle fill="none" cx="13.5" cy="13.5" r="13.5"/>
+                            <path fill="#FFFFFF" d="M13.5,27C6.056,27,0,20.944,0,13.5S6.056,0,13.5,0S27,6.056,27,13.5S20.944,27,13.5,27z M13.5,4
+                                C8.262,4,4,8.262,4,13.5S8.262,23,13.5,23s9.5-4.262,9.5-9.5S18.738,4,13.5,4z"/>
+                        </g>
+                        <g transform="translate(306 437)">
+                            <circle fill="none" cx="13.5" cy="13.5" r="13.5"/>
+                            <path fill="#FFFFFF" d="M13.5,27C6.056,27,0,20.944,0,13.5S6.056,0,13.5,0S27,6.056,27,13.5S20.944,27,13.5,27z M13.5,4
+                                C8.262,4,4,8.262,4,13.5S8.262,23,13.5,23s9.5-4.262,9.5-9.5S18.738,4,13.5,4z"/>
+                        </g>
+                        <g transform="translate(438 89)">
+                            <circle fill="none" cx="9.5" cy="9.5" r="9.5"/>
+                            <path fill="#FFFFFF" d="M9.5,19C4.262,19,0,14.738,0,9.5S4.262,0,9.5,0S19,4.262,19,9.5S14.738,19,9.5,19z M9.5,4
+                                C6.467,4,4,6.467,4,9.5S6.467,15,9.5,15S15,12.533,15,9.5S12.533,4,9.5,4z"/>
+                        </g>
+                        <g transform="translate(662 34)">
+                            <circle fill="none" cx="15" cy="15" r="15"/>
+                            <path fill="#B6EDAE" d="M15,30C6.729,30,0,23.271,0,15S6.729,0,15,0s15,6.729,15,15S23.271,30,15,30z M15,4C8.935,4,4,8.935,4,15
+                                s4.935,11,11,11s11-4.935,11-11S21.065,4,15,4z"/>
+                        </g>
+                        <g transform="translate(359 28)">
+                            <circle fill="none" cx="9" cy="9" r="9"/>
+                            <path fill="#B6EDAE" d="M9,18c-4.962,0-9-4.038-9-9s4.038-9,9-9s9,4.038,9,9S13.962,18,9,18z M9,4C6.243,4,4,6.243,4,9
+                                s2.243,5,5,5s5-2.243,5-5S11.757,4,9,4z"/>
+                        </g>
+                        <g transform="translate(692 185)">
+                            <circle fill="none" cx="15" cy="15" r="15"/>
+                            <path fill="#FFFFFF" d="M15,30C6.729,30,0,23.271,0,15S6.729,0,15,0s15,6.729,15,15S23.271,30,15,30z M15,4C8.935,4,4,8.935,4,15
+                                s4.935,11,11,11s11-4.935,11-11S21.065,4,15,4z"/>
+                        </g>
+                    </g>
+                    <g transform="translate(296 100)">
+                        <path fill="#B6BDC6" d="M30,0h308c16.568,0,30,13.432,30,30l0,0c0,16.568-13.432,30-30,30H30C13.432,60,0,46.568,0,30l0,0
+                            C0,13.432,13.432,0,30,0z"/>
+                        <path fill="#3D3D63" d="M338,60H30C13.458,60,0,46.542,0,30S13.458,0,30,0h308c16.542,0,30,13.458,30,30S354.542,60,338,60z M30,20
+                            c-5.514,0-10,4.486-10,10s4.486,10,10,10h308c5.514,0,10-4.486,10-10s-4.486-10-10-10H30z"/>
+                    </g>
+                    <path fill="#F4F1EC" d="M340.324,149h279.352l0,0v167.243c0,20.301-16.456,36.757-36.757,36.757H377.081
+                        c-20.3,0-36.757-16.456-36.757-36.757V149L340.324,149z"/>
+                    <path fill="#3D3D63" d="M592,362H368c-22.056,0-40-17.944-40-40V160c0-11.028,8.972-20,20-20h264c11.028,0,20,8.972,20,20v162
+                        C632,344.056,614.056,362,592,362z M348,160v162c0,11.028,8.972,20,20,20h224c11.028,0,20-8.972,20-20V160H348z"/>
+                    <path fill="#3D3D63" d="M480,437.5c-5.523,0-10-4.478-10-10v-74c0-5.522,4.477-10,10-10c5.522,0,10,4.478,10,10v74
+                        C490,433.022,485.522,437.5,480,437.5z"/>
+                    <path fill="#3D3D63" d="M405.5,437.5c-2.559,0-5.119-0.977-7.071-2.929c-3.905-3.905-3.905-10.237,0-14.143l74.5-74.5
+                        c3.906-3.904,10.237-3.903,14.143,0c3.905,3.905,3.905,10.237,0,14.143l-74.5,74.5C410.619,436.523,408.059,437.5,405.5,437.5z"/>
+                    <path fill="#3D3D63" d="M554.5,437.5c-2.56,0-5.118-0.977-7.071-2.929l-74.5-74.5c-3.905-3.905-3.905-10.237,0-14.143
+                        c3.906-3.904,10.237-3.903,14.143,0l74.5,74.5c3.905,3.905,3.905,10.237,0,14.143C559.618,436.523,557.06,437.5,554.5,437.5z"/>
+                    <g transform="translate(373 190.002)">
+                        <circle fill="#FFFFFF" cx="44" cy="44" r="44"/>
+                        <path fill="#3D3D63" d="M44,88C19.738,88,0,68.262,0,44S19.738,0,44,0s44,19.738,44,44S68.262,88,44,88z M44,16
+                            C28.561,16,16,28.56,16,44s12.561,28,28,28s28-12.561,28-28S59.439,16,44,16z"/>
+                    </g>
+                    <path fill="#3D3D63" d="M586.597,210.5H496.5c-4.418,0-8-3.582-8-8s3.582-8,8-8h90.097c4.418,0,8,3.582,8,8
+                        S591.015,210.5,586.597,210.5z"/>
+                    <path fill="#3D3D63"
+                          d="M586.597,242H496.5c-4.418,0-8-3.582-8-8s3.582-8,8-8h90.097c4.418,0,8,3.582,8,8S591.015,242,586.597,242z"
+                    />
+                    <path fill="#3D3D63"
+                          d="M586.597,274H496.5c-4.418,0-8-3.582-8-8s3.582-8,8-8h90.097c4.418,0,8,3.582,8,8S591.015,274,586.597,274z"
+                    />
+                    <path fill="#DBDBDB"
+                          d="M348,311h264l0,0v15c0,8.837-7.163,16-16,16H364c-8.836,0-16-7.163-16-16V311L348,311z"/>
+                    <g transform="translate(31 -75.5)">
+                        <g transform="translate(530.079 417.5) rotate(-90)">
+                            <rect x="17" y="-2.062" fill="#B6BDC6" width="8" height="42"/>
+                            <rect x="9" y="-13" fill="#B6BDC6" width="8" height="26"/>
+                        </g>
+                        <g transform="translate(484.406 417.5) rotate(-90)">
+                            <rect x="17" y="-2.062" fill="#B6BDC6" width="8" height="42"/>
+                            <rect x="9" y="-13" fill="#B6BDC6" width="8" height="26"/>
+                        </g>
+                        <g transform="translate(439.847 417.5) rotate(-90)">
+                            <rect x="17" y="-2.062" fill="#B6BDC6" width="8" height="42"/>
+                            <rect x="9" y="-13" fill="#B6BDC6" width="8" height="26"/>
+                        </g>
+                        <g transform="translate(394.173 417.5) rotate(-90)">
+                            <rect x="17" y="-2.062" fill="#B6BDC6" width="8" height="42"/>
+                            <rect x="9" y="-13" fill="#B6BDC6" width="8" height="26"/>
+                        </g>
+                        <g transform="translate(348.5 417.5) rotate(-90)">
+                            <rect x="17" y="-2.062" fill="#B6BDC6" width="8" height="42"/>
+                            <rect x="9" y="-13" fill="#B6BDC6" width="8" height="26"/>
+                        </g>
+                    </g>
+                    </svg>
+
+            </div>
+        </div>
+        <div class="flex flex-wrap flex-col-reverse sm:flex-row">
+            <div class="w-full sm:w-1/2 p-6 mt-6">
+                <svg class="w-5/6 sm:h-64 mx-auto" height="604" node-id="1" sillyvg="true" template-height="604"
+                     template-width="912" version="1.1" viewBox="0 0 912 604" width="912"
+                     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <defs node-id="26">
+                        <clipPath id="mask-2" node-id="10">
+                            <path d="M 175.00 75.00 L 736.60 75.00 L 736.60 529.09 L 175.00 529.09 Z" fill="#000000"
+                                  fill-rule="evenodd" node-id="31" stroke="none" target-height="454.09003"
+                                  target-width="561.6" target-x="175" target-y="75"></path>
+                        </clipPath>
+                        <clipPath id="mask-4" node-id="15">
+                            <path d="M 175.00 75.00 L 736.60 75.00 L 736.60 139.64 L 175.00 139.64 Z" fill="#000000"
+                                  fill-rule="evenodd" node-id="38" stroke="none" target-height="64.64"
+                                  target-width="561.6" target-x="175" target-y="75"></path>
+                        </clipPath>
+                    </defs>
+                    <g node-id="56">
+                        <g node-id="57">
+                            <g clip-path="url(#mask-2)" group-id="1,2" node-id="47">
+                                <path d="M 716.35 529.09 L 195.25 529.09 L 191.56 528.74 L 188.17 527.82 L 185.03 526.32 L 182.19 524.31 L 179.78 521.90 L 177.77 519.06 L 176.27 515.92 L 175.34 512.53 L 175.00 508.84 L 175.00 95.25 L 175.34 91.56 L 176.27 88.17 L 177.77 85.03 L 179.78 82.19 L 182.19 79.78 L 185.03 77.77 L 188.17 76.27 L 191.56 75.34 L 195.25 75.00 L 716.35 75.00 L 720.05 75.34 L 723.43 76.27 L 726.57 77.77 L 729.41 79.78 L 731.83 82.19 L 733.84 85.03 L 735.34 88.17 L 736.26 91.56 L 736.60 95.25 L 736.60 508.84 L 736.26 512.53 L 735.34 515.92 L 733.84 519.06 L 731.83 521.90 L 729.41 524.31 L 726.57 526.32 L 723.43 527.82 L 720.05 528.74 L 716.35 529.09"
+                                      fill="#d7e0ff" fill-rule="evenodd" group-id="1,2,4" id="Fill-1" node-id="13"
+                                      stroke="none" target-height="454.09003" target-width="561.6" target-x="175"
+                                      target-y="75"></path>
+                            </g>
+                        </g>
+                        <g node-id="58">
+                            <g clip-path="url(#mask-4)" group-id="1,3" node-id="54">
+                                <path d="M 720.99 75.00 L 190.62 75.00 L 187.80 75.33 L 185.19 76.24 L 182.73 77.75 L 180.58 79.71 L 178.72 82.10 L 177.13 84.99 L 175.99 88.08 L 175.27 91.45 L 175.00 95.16 L 175.00 139.64 L 736.60 139.64 L 736.60 95.16 L 736.33 91.45 L 735.62 88.08 L 734.47 84.99 L 732.88 82.10 L 731.02 79.71 L 728.87 77.75 L 726.41 76.24 L 723.80 75.33 L 720.99 75.00"
+                                      fill="#5558df" fill-rule="evenodd" group-id="1,3,5" id="Fill-3" node-id="18"
+                                      stroke="none" target-height="64.64" target-width="561.6" target-x="175"
+                                      target-y="75"></path>
+                            </g>
+                        </g>
+                        <path d="M 695.54 490.02 L 216.06 490.02 L 214.00 489.74 L 212.18 488.97 L 210.63 487.76 L 209.42 486.21 L 208.65 484.39 L 208.38 482.33 L 208.38 170.71 L 208.65 168.65 L 209.42 166.83 L 210.63 165.28 L 212.18 164.07 L 214.00 163.30 L 216.06 163.02 L 695.54 163.02 L 697.60 163.30 L 699.42 164.07 L 700.98 165.28 L 702.18 166.83 L 702.95 168.65 L 703.23 170.71 L 703.23 482.33 L 702.95 484.39 L 702.18 486.21 L 700.98 487.76 L 699.42 488.97 L 697.60 489.74 L 695.54 490.02"
+                              fill="#f5f7ff" fill-rule="evenodd" group-id="1" id="Fill-5" node-id="19" stroke="none"
+                              target-height="327" target-width="494.84998" target-x="208.38" target-y="163.02"></path>
+                        <path d="M 228.63 215.04 L 228.63 215.04 L 228.87 212.47 L 229.51 210.11 L 230.55 207.92 L 231.96 205.94 L 233.64 204.26 L 235.62 202.86 L 237.80 201.81 L 240.16 201.17 L 242.74 200.93 L 437.57 200.93 L 440.15 201.17 L 442.51 201.81 L 444.69 202.86 L 446.67 204.26 L 448.35 205.94 L 449.76 207.92 L 450.80 210.11 L 451.44 212.47 L 451.68 215.04 L 451.44 217.62 L 450.80 219.98 L 449.76 222.17 L 448.35 224.15 L 446.67 225.83 L 444.69 227.23 L 442.51 228.27 L 440.15 228.92 L 437.57 229.16 L 242.74 229.16 L 240.16 228.92 L 237.80 228.27 L 235.62 227.23 L 233.64 225.83 L 231.96 224.15 L 230.55 222.17 L 229.51 219.98 L 228.87 217.62 L 228.63 215.04"
+                              fill="#dee6ff" fill-rule="evenodd" group-id="1" id="Fill-7" node-id="20" stroke="none"
+                              target-height="28.230011" target-width="223.04999" target-x="228.63"
+                              target-y="200.93"></path>
+                        <path d="M 228.63 376.91 L 228.63 376.91 L 228.87 374.33 L 229.51 371.97 L 230.55 369.79 L 231.96 367.81 L 233.64 366.13 L 235.62 364.72 L 237.80 363.68 L 240.16 363.04 L 242.74 362.80 L 462.33 362.80 L 464.91 363.04 L 467.27 363.68 L 469.46 364.72 L 471.44 366.13 L 473.12 367.81 L 474.52 369.79 L 475.56 371.97 L 476.21 374.33 L 476.45 376.91 L 476.45 376.91 L 476.21 379.48 L 475.56 381.84 L 474.52 384.03 L 473.12 386.01 L 471.44 387.69 L 469.46 389.09 L 467.27 390.14 L 464.91 390.78 L 462.33 391.02 L 242.74 391.02 L 240.16 390.78 L 237.80 390.14 L 235.62 389.09 L 233.64 387.69 L 231.96 386.01 L 230.55 384.03 L 229.51 381.84 L 228.87 379.48 L 228.63 376.91"
+                              fill="#dee6ff" fill-rule="evenodd" group-id="1" id="Fill-9" node-id="21" stroke="none"
+                              target-height="28.220001" target-width="247.82" target-x="228.63" target-y="362.8"></path>
+                        <path d="M 228.63 432.57 L 228.63 429.16 L 228.84 426.89 L 229.40 424.82 L 230.32 422.90 L 231.56 421.16 L 233.03 419.68 L 234.77 418.44 L 236.70 417.53 L 238.77 416.96 L 241.04 416.75 L 407.84 416.75 L 410.11 416.96 L 412.18 417.53 L 414.11 418.44 L 415.85 419.68 L 417.32 421.16 L 418.56 422.90 L 419.47 424.82 L 420.04 426.89 L 420.25 429.16 L 420.25 432.57 L 420.04 434.83 L 419.47 436.91 L 418.56 438.83 L 417.32 440.57 L 415.85 442.05 L 414.11 443.28 L 412.18 444.20 L 410.11 444.76 L 407.84 444.97 L 241.04 444.97 L 238.77 444.76 L 236.70 444.20 L 234.77 443.28 L 233.03 442.05 L 231.56 440.57 L 230.32 438.83 L 229.40 436.91 L 228.84 434.83 L 228.63 432.57"
+                              fill="#dee6ff" fill-rule="evenodd" group-id="1" id="Fill-11" node-id="22" stroke="none"
+                              target-height="28.220001" target-width="191.62" target-x="228.63"
+                              target-y="416.75"></path>
+                        <path d="M 228.63 269.00 L 228.63 269.00 L 228.87 266.42 L 229.51 264.06 L 230.55 261.88 L 231.96 259.90 L 233.64 258.22 L 235.62 256.81 L 237.80 255.77 L 240.16 255.13 L 242.74 254.89 L 578.65 254.89 L 581.23 255.13 L 583.59 255.77 L 585.77 256.81 L 587.75 258.22 L 589.43 259.90 L 590.84 261.88 L 591.88 264.06 L 592.52 266.42 L 592.76 269.00 L 592.52 271.57 L 591.88 273.93 L 590.84 276.12 L 589.43 278.10 L 587.75 279.78 L 585.77 281.18 L 583.59 282.23 L 581.23 282.87 L 578.65 283.11 L 242.74 283.11 L 240.16 282.87 L 237.80 282.23 L 235.62 281.18 L 233.64 279.78 L 231.96 278.10 L 230.55 276.12 L 229.51 273.93 L 228.87 271.57 L 228.63 269.00"
+                              fill="#5558df" fill-rule="evenodd" group-id="1" id="Fill-13" node-id="23" stroke="none"
+                              target-height="28.219986" target-width="364.13" target-x="228.63"
+                              target-y="254.89"></path>
+                        <path d="M 228.63 322.95 L 228.63 322.95 L 228.87 320.38 L 229.51 318.02 L 230.55 315.83 L 231.96 313.85 L 233.64 312.17 L 235.62 310.77 L 237.80 309.72 L 240.16 309.08 L 242.74 308.84 L 578.65 308.84 L 581.23 309.08 L 583.59 309.72 L 585.77 310.77 L 587.75 312.17 L 589.43 313.85 L 590.84 315.83 L 591.88 318.02 L 592.52 320.38 L 592.76 322.95 L 592.76 322.95 L 592.52 325.53 L 591.88 327.89 L 590.84 330.08 L 589.43 332.06 L 587.75 333.74 L 585.77 335.14 L 583.59 336.18 L 581.23 336.83 L 578.65 337.07 L 242.74 337.07 L 240.16 336.83 L 237.80 336.18 L 235.62 335.14 L 233.64 333.74 L 231.96 332.06 L 230.55 330.08 L 229.51 327.89 L 228.87 325.53 L 228.63 322.95"
+                              fill="#f5875d" fill-rule="evenodd" group-id="1" id="Fill-15" node-id="24" stroke="none"
+                              target-height="28.230011" target-width="364.13" target-x="228.63"
+                              target-y="308.84"></path>
+                    </g>
+                </svg>
+            </div>
+            <div class="w-full sm:w-1/2 p-6 mt-6">
+                <div class="align-middle h-full flex flex-col justify-center ">
+                    <h3 class="text-3xl text-gray-800 font-bold leading-none mb-3">
+                        Customizable Search Criteria
+                    </h3>
+                    <p class="text-gray-600 mb-8">
+                        Tailor your search criteria to target specific business categories, locations, or keywords, ensuring you obtain the most relevant and valuable leads.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-gray-100 py-8" id="Pricing">
+    <div class="container mx-auto px-4 pt-4 pb-12 text-gray-800 max-w-6xl">
+        <h2 class="w-full my-2 text-5xl font-bold leading-tight text-center text-gray-800">
+            Pricing
+        </h2>
+        <div class="w-full mb-4">
+            <div class="h-1 mx-auto gradient w-64 opacity-25 my-0 py-0 rounded-t"></div>
+        </div>
+        <p class="text-center text-gray-600 mb-10 max-w-2xl mx-auto">
+            Choose the right plan for you. Pro subscriptions are started from inside the extension after you install it.
+        </p>
+
+        <div class="flex flex-col lg:flex-row justify-center items-stretch gap-6 lg:gap-5 pt-4">
+            <!-- Bing Maps Scraper - Free -->
+            <div class="flex flex-col w-full lg:w-1/4 max-w-sm mx-auto lg:mx-0 rounded-xl bg-white border border-gray-200 shadow-sm opacity-95">
+                <div class="p-6 flex-1">
+                    <h3 class="text-xl font-bold text-gray-500 mb-1">Bing Maps Scraper</h3>
+                    <p class="text-sm text-gray-400 mb-4">Free — lightweight</p>
+                    <div class="text-2xl font-bold text-gray-600 mb-4">Free</div>
+                    <ul class="text-sm text-gray-500 space-y-2">
+                        <li class="flex items-start">
+                            <span class="mr-2">•</span>
+                            <span>Extract business data from Bing Maps</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="mr-2">•</span>
+                            <span>Export to CSV</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="mr-2">•</span>
+                            <span>No cost</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="p-6 pt-0">
+                    <a href="https://chrome.google.com/webstore/detail/maps-scraper-map-data-ext/ofbhiclojhjkggpnapcnjjjdjlgcikdf"
+                       class="block w-full text-center hover:underline bg-gray-200 text-gray-700 font-semibold rounded-full py-3 px-6 shadow-sm focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-100 ease-in-out"
+                       target="_blank" rel="noopener">
+                        Get Bing Maps Scraper
+                    </a>
+                </div>
+            </div>
+
+            <!-- Google Maps Scraper - Free -->
+            <div class="flex flex-col w-full lg:w-1/3 max-w-sm mx-auto lg:mx-0 rounded-xl bg-white border border-gray-200 shadow-lg">
+                <div class="p-6 flex-1">
+                    <h3 class="text-xl font-bold text-gray-800 mb-1">Google Maps Scraper</h3>
+                    <p class="text-sm text-gray-500 mb-4">Free tier</p>
+                    <div class="text-3xl font-bold text-gray-800 mb-1">$0</div>
+                    <p class="text-xs text-gray-400 mb-4">Get started with basics</p>
+                    <ul class="text-sm text-gray-600 space-y-2">
+                        <li class="flex items-center">
+                            <span class="inline-block w-6 h-6 rounded bg-gray-100 text-gray-500 text-xs font-bold leading-6 text-center mr-2">30</span>
+                            Leads per task
+                        </li>
+                        <li class="flex items-center">✓ Custom export setting</li>
+                        <li class="flex items-center">✓ Extract basic information</li>
+                        <li class="flex items-center">✓ Extract phone number</li>
+                        <li class="flex items-center text-gray-400">✗ Email, social medias and more</li>
+                    </ul>
+                </div>
+                <div class="p-6 pt-0">
+                    <a href="./google-maps-scraper.html"
+                       class="block w-full text-center hover:underline gradient text-white font-bold rounded-full py-3 px-6 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-100 ease-in-out">
+                        Get Google Maps Scraper
+                    </a>
+                </div>
+            </div>
+
+            <!-- Google Maps Scraper - Pro -->
+            <div class="flex flex-col w-full lg:w-1/3 max-w-sm mx-auto lg:mx-0 rounded-xl bg-white border-2 border-green-500 shadow-xl relative">
+                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <span class="inline-block text-white text-xs font-bold px-3 py-1 rounded-full shadow" style="background: linear-gradient(90deg, #244f18 0%, #50bb2c 100%);">Popular</span>
+                </div>
+                <div class="p-6 flex-1 pt-7">
+                    <h3 class="text-xl font-bold text-green-800 mb-1">Google Maps Scraper</h3>
+                    <p class="text-sm text-green-600 mb-4">Pro — full power</p>
+                    <div class="flex flex-wrap items-baseline gap-x-2 mb-1">
+                        <span class="text-3xl font-bold text-gray-800">$12</span>
+                        <span class="text-sm text-gray-500">/month</span>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-2">
+                        <span class="font-semibold text-green-600">Save 37% vs monthly</span> with yearly billing.
+                    </p>
+                    <ul class="text-sm text-gray-700 space-y-2">
+                        <li class="flex items-center font-medium">∞ Unlimited leads</li>
+                        <li class="flex items-center">✓ Custom export setting</li>
+                        <li class="flex items-center">✓ Extract basic information & phone</li>
+                        <li class="flex items-center text-green-700 font-semibold">✓ Email, social medias and more</li>
+                    </ul>
+                </div>
+                <div class="p-6 pt-0">
+                    <a href="./google-maps-scraper.html"
+                       class="block w-full text-center hover:underline gradient text-white font-bold rounded-full py-3 px-6 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-100 ease-in-out">
+                        Get Google Maps Scraper
+                    </a>
+                    <p class="text-xs text-gray-500 text-center mt-3 leading-snug">
+                        Subscribe to Pro from inside the extension after install.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="bg-white py-8 text-gray-600" id="FAQ">
+    <div class="container flex flex-col justify-center px-4 py-8 mx-auto md:p-8">
+        <h2 class="text-2xl font-semibold sm:text-4xl text-center">FAQ</h2>
+        <p class="mt-4 mb-8 text-gray-400 text-center">
+            Frequently Asked Questions
+        </p>
+        <div class="space-y-4">
+            <details class="w-full border rounded-lg">
+                <summary class="px-4 py-6 focus:outline-none focus-visible:ring-violet-400">
+                    What does this extension do?
+                </summary>
+                <p class="px-4 py-6 pt-0 ml-4 -mt-4 text-gray-400">
+                    This extension allows you to easily extract business data like phone numbers, emails, and social media profiles from map. With one click, you can scrape information from map listings and download it.
+                </p>
+            </details>
+            <details class="w-full border rounded-lg">
+                <summary class="px-4 py-6 focus:outline-none focus-visible:ring-violet-400">
+                    Do I need coding skills to use this?
+                </summary>
+                <p class="px-4 py-6 pt-0 ml-4 -mt-4 text-gray-400">
+                    No coding experience is required. The extension has a simple and user-friendly interface that anyone can use.
+                </p>
+            </details>
+            <details class="w-full border rounded-lg">
+                <summary class="px-4 py-6 focus:outline-none focus-visible:ring-violet-400">
+                    How does this extension work?
+                </summary>
+                <p class="px-4 py-6 pt-0 ml-4 -mt-4 text-gray-400">
+                    This extension integrates seamlessly with your browser and allows you to easily extract business data from maps. Simply navigate to the map page, specify your search criteria, and click the extraction button. The extension will automatically gather the relevant information and present it to you.
+                </p>
+            </details>
+            <details class="w-full border rounded-lg">
+                <summary class="px-4 py-6 focus:outline-none focus-visible:ring-violet-400">
+                    How can I scrape Google Maps?
+                </summary>
+                <p class="px-4 py-6 pt-0 ml-4 -mt-4 text-gray-400">
+                    If you want to scrape Google Maps, please use the
+                    <a class="underline font-bold" href="./google-maps-scraper.html" target="_self">Google Maps Scraper</a>
+                    browser extension.
+                </p>
+            </details>
+            <details class="w-full border rounded-lg">
+                <summary class="px-4 py-6 focus:outline-none focus-visible:ring-violet-400">
+                    Can I export the extracted data to Excel?
+                </summary>
+                <p class="px-4 py-6 pt-0 ml-4 -mt-4 text-gray-400">
+                    Yes, absolutely! The Maps Scraper extension provides Customizable Search Criteria. You can
+                    easily export the extracted map data to a CSV file format, which can be imported into Excel for
+                    further analysis and organization.
+                </p>
+            </details>
+            <!--<details class="w-full border rounded-lg">
+                <summary class="px-4 py-6 focus:outline-none focus-visible:ring-violet-400">
+                    Is the Maps Scraper extension free to use?
+                </summary>
+                <p class="px-4 py-6 pt-0 ml-4 -mt-4 text-gray-400">
+                    Yes, the Maps Scraper extension is free to use. You can install it from the Chrome Web Store
+                    without any cost. However, please note that some advanced features may require a premium
+                    subscription.
+                </p>
+            </details>
+            <details class="w-full border rounded-lg">
+                <summary class="px-4 py-6 focus:outline-none focus-visible:ring-violet-400">
+                    How to cancel my subscription?
+                </summary>
+                <p class="px-4 py-6 pt-0 ml-4 -mt-4 text-gray-400">
+                    You can cancel the premium subscription at any time by sending us your ID number by email and we
+                    will unsubscribe for you immediately. (ID number is ON the extension settings/question page)
+                </p>
+            </details>-->
+        </div>
+    </div>
+</section>
+<!-- Change the colour #f8fafc to match the previous section colour -->
+<svg class="wave-top" viewBox="0 0 1439 147" version="1.1" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-1.000000, -14.000000)" fill-rule="nonzero">
+            <g class="wave" fill="#ffffff">
+                <path
+                        d="M1440,84 C1383.555,64.3 1342.555,51.3 1317,45 C1259.5,30.824 1206.707,25.526 1169,22 C1129.711,18.326 1044.426,18.475 980,22 C954.25,23.409 922.25,26.742 884,32 C845.122,37.787 818.455,42.121 804,45 C776.833,50.41 728.136,61.77 713,65 C660.023,76.309 621.544,87.729 584,94 C517.525,105.104 484.525,106.438 429,108 C379.49,106.484 342.823,104.484 319,102 C278.571,97.783 231.737,88.736 205,84 C154.629,75.076 86.296,57.743 0,32 L0,0 L1440,0 L1440,84 Z"
+                ></path>
+            </g>
+            <g transform="translate(1.000000, 15.000000)" fill="#FFFFFF">
+                <g transform="translate(719.500000, 68.500000) rotate(-180.000000) translate(-719.500000, -68.500000) ">
+                    <path d="M0,0 C90.7283404,0.927527913 147.912752,27.187927 291.910178,59.9119003 C387.908462,81.7278826 543.605069,89.334785 759,82.7326078 C469.336065,156.254352 216.336065,153.6679 0,74.9732496"
+                          opacity="0.100000001"></path>
+                    <path
+                            d="M100,104.708498 C277.413333,72.2345949 426.147877,52.5246657 546.203633,45.5787101 C666.259389,38.6327546 810.524845,41.7979068 979,55.0741668 C931.069965,56.122511 810.303266,74.8455141 616.699903,111.243176 C423.096539,147.640838 250.863238,145.462612 100,104.708498 Z"
+                            opacity="0.100000001"
+                    ></path>
+                    <path d="M1046,51.6521276 C1130.83045,29.328812 1279.08318,17.607883 1439,40.1656806 L1439,120 C1271.17211,77.9435312 1140.17211,55.1609071 1046,51.6521276 Z"
+                          opacity="0.200000003"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
+<section class="container mx-auto text-center py-6 mb-12" id="Contact">
+    <h2 class="w-full my-2 text-5xl font-bold leading-tight text-center text-white">
+        Contact Us
+    </h2>
+    <div class="w-full mb-4">
+        <div class="h-1 mx-auto bg-white w-1/6 opacity-25 my-0 py-0 rounded-t"></div>
+    </div>
+    <h3 class="my-4 text-3xl leading-tight">
+        Send us an email at
+        <a href="mailto:info@mapsscraper.net"
+           class="underline transition text-green-400 hover:scale-110 hover:text-blue-200">info@mapsscraper.net</a>
+        if you have any questions. We'll help you out.
+    </h3>
+    <a class="mx-auto lg:mx-0 hover:underline bg-white text-gray-800 font-bold rounded-full my-6 py-4 px-8 shadow-lg focus:outline-none focus:shadow-outline transform transition hover:scale-105 duration-100 ease-in-out"
+       href="https://chrome.google.com/webstore/detail/maps-scraper-map-data-ext/ofbhiclojhjkggpnapcnjjjdjlgcikdf" target="_blank">
+        Add To Chrome
+    </a>
+</section>
+<!--Footer-->
+<footer class="bg-white">
+    <div class="container mx-auto px-8">
+        <div class="w-full flex flex-col md:flex-row py-6">
+            <div class="flex-1 mb-6 text-black">
+                <a class="no-underline hover:no-underline font-bold text-2xl lg:text-3xl flex flex-row items-center"
+                   href="#">
+                    <img class="h-8 mr-2" src="images/logo.png" alt="Maps Scraper">
+                    MapsScraper
+                </a>
+            </div>
+            <div class="flex-1">
+                <p class="uppercase text-gray-500 md:mb-6">Links</p>
+                <ul class="list-reset mb-6">
+                    <li class="mt-2 inline-block mr-2 md:block md:mr-0">
+                        <a href="#Features" class="no-underline hover:underline text-gray-800 hover:text-pink-500">Features</a>
+                    </li>
+                    <li class="mt-2 inline-block mr-2 md:block md:mr-0">
+                        <a href="#Pricing" class="no-underline hover:underline text-gray-800 hover:text-pink-500">Pricing</a>
+                    </li>
+                    <li class="mt-2 inline-block mr-2 md:block md:mr-0">
+                        <a href="#FAQ" class="no-underline hover:underline text-gray-800 hover:text-pink-500">FAQ</a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="flex-1">
+                <p class="uppercase text-gray-500 md:mb-6">Legal</p>
+                <ul class="list-reset mb-6">
+                    <li class="mt-2 inline-block mr-2 md:block md:mr-0">
+                        <a href="./terms.html" class="no-underline hover:underline text-gray-800 hover:text-pink-500">Terms</a>
+                    </li>
+                    <li class="mt-2 inline-block mr-2 md:block md:mr-0">
+                        <a href="./privacy.html" class="no-underline hover:underline text-gray-800 hover:text-pink-500">Privacy</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="flex-1">
+                <p class="uppercase text-gray-500 md:mb-6">Features</p>
+                <ul class="list-reset mb-6">
+                    <li class="mt-2 inline-block mr-2 md:block md:mr-0">
+                        <a href="#Features" class="no-underline hover:underline text-gray-800 hover:text-pink-500">
+                            Easy Data Extraction
+                        </a>
+                    </li>
+                    <li class="mt-2 inline-block mr-2 md:block md:mr-0">
+                        <a href="#Features" class="no-underline hover:underline text-gray-800 hover:text-pink-500">
+                            Customizable Search Criteria
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+<!-- jQuery if you need it
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+-->
+<script>
+    var scrollpos = window.scrollY;
+    var header = document.getElementById("header");
+    var navcontent = document.getElementById("nav-content");
+    var navaction = document.getElementById("navAction");
+    var brandname = document.getElementById("brandname");
+    var toToggle = document.querySelectorAll(".toggleColour");
+
+    document.addEventListener("scroll", function () {
+        /*Apply classes for slide in bar*/
+        scrollpos = window.scrollY;
+
+        if (scrollpos > 10) {
+            header.classList.add("bg-white");
+            navaction.classList.remove("bg-white");
+            navaction.classList.add("gradient");
+            navaction.classList.remove("text-gray-800");
+            navaction.classList.add("text-white");
+            //Use to switch toggleColour colours
+            for (var i = 0; i < toToggle.length; i++) {
+                toToggle[i].classList.add("text-gray-800");
+                toToggle[i].classList.remove("text-white");
+            }
+            header.classList.add("shadow");
+            navcontent.classList.remove("bg-gray-100");
+            navcontent.classList.add("bg-white");
+        } else {
+            header.classList.remove("bg-white");
+            navaction.classList.remove("gradient");
+            navaction.classList.add("bg-white");
+            navaction.classList.remove("text-white");
+            navaction.classList.add("text-gray-800");
+            //Use to switch toggleColour colours
+            for (var i = 0; i < toToggle.length; i++) {
+                toToggle[i].classList.add("text-white");
+                toToggle[i].classList.remove("text-gray-800");
+            }
+
+            header.classList.remove("shadow");
+            navcontent.classList.remove("bg-white");
+            navcontent.classList.add("bg-gray-100");
+        }
+    });
+</script>
+<script>
+    /*Toggle dropdown list*/
+    /*https://gist.github.com/slavapas/593e8e50cf4cc16ac972afcbad4f70c8*/
+
+    var navMenuDiv = document.getElementById("nav-content");
+    var navMenu = document.getElementById("nav-toggle");
+
+    document.onclick = check;
+
+    function check(e) {
+        var target = (e && e.target) || (event && event.srcElement);
+
+        //Nav Menu
+        if (!checkParent(target, navMenuDiv)) {
+            // click NOT on the menu
+            if (checkParent(target, navMenu)) {
+                // click on the link
+                if (navMenuDiv.classList.contains("hidden")) {
+                    navMenuDiv.classList.remove("hidden");
+                } else {
+                    navMenuDiv.classList.add("hidden");
+                }
+            } else {
+                // click both outside link and outside menu, hide menu
+                navMenuDiv.classList.add("hidden");
+            }
+        }
+    }
+
+    function checkParent(t, elm) {
+        while (t.parentNode) {
+            if (t == elm) {
+                return true;
+            }
+            t = t.parentNode;
+        }
+        return false;
+    }
+</script>
+<script>
+    window.$crisp = [];
+    window.CRISP_WEBSITE_ID = "cbeeaa69-e735-469b-bb31-5dc7138148e1";
+    (function () {
+        d = document;
+        s = d.createElement("script");
+        s.src = "https://client.crisp.chat/l.js";
+        s.async = 1;
+        d.getElementsByTagName("head")[0].appendChild(s);
+    })();
+
+</script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"67debdc48fc04480999afa84000b97a4","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
