@@ -12,6 +12,7 @@ const logSchema = new mongoose.Schema({
     enum: [
       'CAMPAIGN',
       'DISCOVERY',
+      'SOCIAL_DISCOVERY',
       'WEBSITE_AUDIT',
       'AI_PITCH',
       'DUPLICATE_CHECK',

@@ -249,7 +249,14 @@ const generalIndustryRule = (lead, audit) => {
 
 const analyzeIndustryGaps = (lead, audit = {}) => {
   const handler = industryRules[lead.category] || generalIndustryRule;
-  return handler(lead, audit);
+  const result = handler(lead, audit);
+  if (!result.recommendedServices || result.recommendedServices.length === 0) {
+    result.recommendedServices = [
+      'Conversion Rate Optimization & Funnels',
+      'Local SEO & Search Visibility Scaling'
+    ];
+  }
+  return result;
 };
 
 module.exports = {

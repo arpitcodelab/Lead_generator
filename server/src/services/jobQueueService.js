@@ -134,7 +134,11 @@ const processCampaignJob = async (campaignId) => {
         `Verifying public social presence for "${b.businessName}"...`
       );
 
-      const socialDiscovery = await discoverSocialPresence(b);
+      // Classify Phone: Landline vs Mobile (WhatsApp Eligibility)
+      const rawPhone = b.phone || 'NOT FOUND';
+      let phoneClassification = classifyPhone(rawPhone);
+
+      const socialDiscovery = await discoverSocialPresence({ ...b, phone: rawPhone, location: campaign.location });
 
       // STAGE 5: Analyzing digital presence & website audit...
       await updateCampaignProgress(
@@ -173,20 +177,9 @@ const processCampaignJob = async (campaignId) => {
         ? b.phone 
         : (auditResult.discoveredPhone && auditResult.discoveredPhone !== 'NOT FOUND' ? auditResult.discoveredPhone : 'NOT FOUND');
 
-      // Classify Phone: Landline vs Mobile (WhatsApp Eligibility)
-      const phoneClassification = classifyPhone(finalPhone);
+      phoneClassification = classifyPhone(finalPhone);
 
-      // Re-run social discovery with phone context if needed
       let socialData = socialDiscovery;
-      if (socialData.instagramUsername === 'NOT FOUND') {
-        const enrichedSocial = await discoverSocialPresence({ ...b, phone: finalPhone, location: campaign.location });
-        if (enrichedSocial.instagramUsername !== 'NOT FOUND') {
-          socialData = enrichedSocial;
-          finalIgUsername = enrichedSocial.instagramUsername;
-          finalIgUrl = enrichedSocial.instagramUrl;
-          finalIgStatus = enrichedSocial.instagramStatus;
-        }
-      }
 
       // Infer fallback contact person role based on industry
       let initialContact = b.contactPerson && b.contactPerson !== 'NOT FOUND' 
@@ -305,6 +298,9 @@ const processCampaignJob = async (campaignId) => {
       // Save Lead in DB
       const savedLead = await Lead.create(partialLead);
       processedLeads.push(savedLead);
+
+      // Brief delay between leads to respect Groq token bucket
+      await new Promise(r => setTimeout(r, 600));
     }
 
     // ==========================================

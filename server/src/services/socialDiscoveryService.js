@@ -144,25 +144,39 @@ Respond with strictly valid JSON only (no markdown, no backticks):
   "competitor": "..."
 }`;
 
-      const res = await axios.post(
-        'https://api.groq.com/openai/v1/chat/completions',
-        {
-          model: 'qwen/qwen3.8-27b',
-          messages: [
-            { role: 'system', content: 'You are an expert business intelligence researcher. Return strictly valid JSON only.' },
-            { role: 'user', content: prompt }
-          ],
-          temperature: 0.2,
-          max_tokens: 400
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
-          },
-          timeout: 6000
+      let res;
+      let attempts = 0;
+      while (attempts < 2) {
+        attempts++;
+        try {
+          res = await axios.post(
+            'https://api.groq.com/openai/v1/chat/completions',
+            {
+              model: 'qwen/qwen3.8-27b',
+              messages: [
+                { role: 'system', content: 'You are an expert business intelligence researcher. Return strictly valid JSON only.' },
+                { role: 'user', content: prompt }
+              ],
+              temperature: 0.2,
+              max_tokens: 200
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+              },
+              timeout: 7000
+            }
+          );
+          break;
+        } catch (postErr) {
+          if (postErr.response?.status === 429 && attempts < 2) {
+            await new Promise(r => setTimeout(r, 1200));
+            continue;
+          }
+          throw postErr;
         }
-      );
+      }
 
       let content = res.data.choices[0]?.message?.content || '{}';
       content = content.replace(/```json/gi, '').replace(/```/g, '').trim();

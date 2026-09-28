@@ -48,34 +48,7 @@ const classifyPhone = (rawPhone) => {
   const clean = rawPhone.replace(/\s+/g, ' ').trim();
   const digitsOnly = rawPhone.replace(/\D/g, '');
 
-  // 1. Check explicit STD code formats (e.g. 0120 438 5784, +91 120 438 5784, 01204385784)
-  for (const std of INDIAN_STD_CODES) {
-    // Check if starts with STD with leading 0 or +91
-    const pattern0 = new RegExp(`^0${std}\\D*(\\d{6,8})$`);
-    const pattern91 = new RegExp(`^91${std}\\D*(\\d{6,8})$`);
-    const patternStd = new RegExp(`^${std}\\D*(\\d{6,8})$`);
-
-    if (
-      clean.startsWith(`0${std} `) ||
-      clean.startsWith(`0${std}-`) ||
-      clean.startsWith(`+91 ${std}`) ||
-      clean.startsWith(`+91-${std}`) ||
-      clean.startsWith(`(${std})`) ||
-      pattern0.test(digitsOnly) ||
-      pattern91.test(digitsOnly)
-    ) {
-      return {
-        phoneType: 'LANDLINE',
-        isLandline: true,
-        isMobile: false,
-        whatsappEligible: false,
-        formattedPhone: clean,
-        stdCode: std.startsWith('0') ? std : `0${std}`
-      };
-    }
-  }
-
-  // 2. Normalize 10-digit Indian Mobile Numbers
+  // 1. Normalize 10-digit Indian Mobile Numbers
   // Standard Indian mobile: 10 digits starting with 6, 7, 8, or 9
   // Allowed prefixes: +91, 91, 0, or raw 10 digits
   let tenDigit = '';
@@ -98,15 +71,32 @@ const classifyPhone = (rawPhone) => {
         formattedPhone: `+91 ${tenDigit.slice(0, 5)} ${tenDigit.slice(5)}`,
         stdCode: null
       };
-    } else {
-      // 10 digits starting with 1, 2, 3, 4, 5 in India is a Landline (e.g. 1204385784)
+    }
+  }
+
+  // 2. Check explicit STD code formats (e.g. 0120 438 5784, +91 120 438 5784, 01204385784)
+  for (const std of INDIAN_STD_CODES) {
+    const pattern0 = new RegExp(`^0${std}\\D*(\\d{6,8})$`);
+    const pattern91 = new RegExp(`^91${std}\\D*(\\d{6,8})$`);
+    const patternStd = new RegExp(`^${std}\\D*(\\d{6,8})$`);
+
+    if (
+      clean.startsWith(`0${std} `) ||
+      clean.startsWith(`0${std}-`) ||
+      clean.startsWith(`+91 ${std}`) ||
+      clean.startsWith(`+91-${std}`) ||
+      clean.startsWith(`(${std})`) ||
+      pattern0.test(digitsOnly) ||
+      pattern91.test(digitsOnly) ||
+      patternStd.test(digitsOnly)
+    ) {
       return {
         phoneType: 'LANDLINE',
         isLandline: true,
         isMobile: false,
         whatsappEligible: false,
         formattedPhone: clean,
-        stdCode: digitsOnly.slice(0, 3)
+        stdCode: std.startsWith('0') ? std : `0${std}`
       };
     }
   }
@@ -123,7 +113,7 @@ const classifyPhone = (rawPhone) => {
     };
   }
 
-  // 4. Fallback check: if contains fewer than 10 digits or starts with 0
+  // 4. Fallback check: if contains fewer than 10 digits or starts with 0/1/2/3/4/5
   if (digitsOnly.length < 10 || (digitsOnly.startsWith('0') && !['6', '7', '8', '9'].includes(digitsOnly.charAt(1)))) {
     return {
       phoneType: 'LANDLINE',

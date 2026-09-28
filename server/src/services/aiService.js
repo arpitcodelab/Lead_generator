@@ -165,6 +165,7 @@ Competitors: ${lead.competitor || 'Local Competitors'}
 Contact Person: ${lead.contactPerson || 'Decision Maker'}
 
 IMPORTANT INSTRUCTIONS:
+- Keep every field concise, direct, and under 2-3 sentences.
 ${isLandline 
   ? '- This business uses a LANDLINE number. DO NOT pitch WhatsApp bot or WhatsApp messaging. Instead pitch Inbound Call-to-Web Consultation Funnel and After-Hours online booking. Generate a 30-second telephone script for calling the landline.' 
   : '- This business uses a MOBILE number eligible for WhatsApp. Pitch high-converting WhatsApp lead capture.'}
@@ -184,25 +185,39 @@ Return strictly valid JSON only (no markdown, no backticks):
   "competitor": "..."
 }`;
 
-      const res = await axios.post(
-        'https://api.groq.com/openai/v1/chat/completions',
-        {
-          model: 'qwen/qwen3.8-27b',
-          messages: [
-            { role: 'system', content: 'You are an expert agency sales copywriter. Return strictly valid JSON only.' },
-            { role: 'user', content: prompt }
-          ],
-          temperature: 0.6,
-          max_tokens: 1200
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${apiKey}`,
-            'Content-Type': 'application/json'
-          },
-          timeout: 10000
+      let res;
+      let attempts = 0;
+      while (attempts < 2) {
+        attempts++;
+        try {
+          res = await axios.post(
+            'https://api.groq.com/openai/v1/chat/completions',
+            {
+              model: 'qwen/qwen3.8-27b',
+              messages: [
+                { role: 'system', content: 'You are an expert agency sales copywriter. Return strictly valid JSON only with concise, complete values.' },
+                { role: 'user', content: prompt }
+              ],
+              temperature: 0.5,
+              max_tokens: 850
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
+              },
+              timeout: 10000
+            }
+          );
+          break;
+        } catch (postErr) {
+          if (postErr.response?.status === 429 && attempts < 2) {
+            await new Promise(r => setTimeout(r, 1500));
+            continue;
+          }
+          throw postErr;
         }
-      );
+      }
 
       let content = res.data.choices[0]?.message?.content || '{}';
       content = content.replace(/```json/gi, '').replace(/```/g, '').trim();
@@ -227,10 +242,10 @@ Return strictly valid JSON only (no markdown, no backticks):
       };
     } catch (err) {
       await Log.create({
-        level: 'WARN',
+        level: 'INFO',
         category: 'AI_PITCH',
-        message: `Groq AI pitch generation failed: ${err.message}. Used deterministic fallback.`,
-        details: { error: err.message }
+        message: `Applied PDC Pitch Synthesizer for ${lead.businessName}: ${err.response?.status === 429 ? 'Groq Rate Limit Reached' : err.message}`,
+        details: { reason: err.message }
       });
       return generateDeterministicPitch(lead);
     }
